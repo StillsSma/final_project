@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, TransactionView
+from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, TransactionView, process_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,7 +23,8 @@ urlpatterns = [
     url(r'^create/$', InventoryCreateView.as_view(), name="inventory_create_view"),
     url(r'^update/(?P<pk>\d+)$', InventoryUpdateView.as_view(), name="inventory_update_view"),
     url(r'^delete/(?P<pk>\d+)$', InventoryDeleteView.as_view(), name="inventory_delete_view"),
-    url(r'^transaction/$', TransactionView.as_view(), name="transaction_view")
+    url(r'^transaction/$', TransactionView.as_view(), name="transaction_view"),
+    url(r'^process_card/$',process_view, name="process_view"),
 
 
     ]
