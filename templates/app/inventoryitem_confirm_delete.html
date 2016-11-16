@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="">
+  <form class="" action="" method="post">
+    <p>
+      You are about to delete Inventory Item: {{ item.name }}. Are you Sure?
+    </p>
+    <input type="submit" value="Yes">
+    <a href="{% url 'inventory_list_view' %}">No, Go back.</a>
+    {% csrf_token %}
+  </form>
+</div>
+
+
+{% endblock %}
