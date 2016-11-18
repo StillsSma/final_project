@@ -1,19 +1,17 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from app.models import InventoryItem
+from app.forms import OrderForm
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-import uuid
-import cgi
-import squareconnect
-from squareconnect.rest import ApiException
-from squareconnect.apis.transaction_api import TransactionApi
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from app.charge_card import charge
 
 
-
-class TransactionView(TemplateView):
+class TransactionView(FormView):
     template_name = "credit_card.html"
+    form_class = OrderForm
+
 
 class InventoryListView(ListView):
     model = InventoryItem
@@ -34,22 +32,6 @@ class InventoryDeleteView(DeleteView):
 
 def process_view(request):
     if request.method == 'POST':
-
-        nonce = request.POST['nonce']
-        access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
-        location_id = 'CBASECSHZryawv4Lm4P10p3gSj4'
-        api_instance = TransactionApi()
-        idempotency_key = str(uuid.uuid1())
-        amount = {'amount': 100, 'currency': 'USD'}
-        body = {'idempotency_key': idempotency_key, 'card_nonce': nonce, 'amount_money': amount}
-
-        try:
-          api_response = api_instance.charge(access_token, location_id, body)
-          res = api_response.transaction
-        except ApiException as e:
-          res = "Exception when calling TransactionApi->charge: {}".format(e)
-        item = InventoryItem.objects.get(pk=3)
-        item.quantity = item.quantity - 1
-        item.save()
+        charge(request)
 
     return render(request, 'process.html')

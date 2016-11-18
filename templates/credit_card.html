@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <html>
 <head>
   <meta charset="UTF-8">
@@ -153,14 +155,9 @@
     These div elements are the placeholder elements that are replaced by the
     SqPaymentForm's iframes.
   -->
-  <label>Card Number</label>
-  <div id="sq-card-number"></div>
-  <label>CVV</label>
-  <div id="sq-cvv"></div>
-  <label>Expiration Date</label>
-  <div id="sq-expiration-date"></div>
-  <label>Postal Code</label>
-  <div id="sq-postal-code"></div>
+
+
+
 
 
   <!--
@@ -170,8 +167,23 @@
     You should replace the action attribute of the form with the path of
     the URL you want to POST the nonce to (for example, "/process-card")
   -->
+  <div class="container">
+
+
   <form id="nonce-form" novalidate action="/process_card/" method="post">
+    {{ form.as_p }}
+
+    <label>Card Number</label>
+    <div id="sq-card-number"></div>
+    <label>CVV</label>
+    <div id="sq-cvv"></div>
+    <label>Expiration Date</label>
+    <div id="sq-expiration-date"></div>
+    <label>Postal Code</label>
+    <div id="sq-postal-code"></div>
+
       {% csrf_token %}
+
     <!--
       Whenever a nonce is generated, it's assigned as the value of this hidden
       input field.
@@ -184,5 +196,7 @@
     -->
     <input type="submit" onclick="requestCardNonce(event)">
   </form>
+  </div>
 </body>
 </html>
+{% endblock %}

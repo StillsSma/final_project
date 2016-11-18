@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>create a transaction</h1>
+<div class="container">
+  <h1>Add a New Inventory Item</h1>
 
-<form class="" action="" method="post">
-  {%csrf_token%}
-  {{ form.as_p }}
+  <form class="" action="" method="post">
+    {%csrf_token%}
+    {{ form.as_p }}
 
-  <input type="submit" name="" value="Submit!">
+    <input type="submit" name="" value="Submit!">
 
 
-</form>
+  </form>
+</div>
+
 
 {% endblock %}
