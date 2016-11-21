@@ -1,17 +1,38 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from app.models import InventoryItem
+from app.models import InventoryItem, Profile, Invoice
 from app.forms import OrderForm
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from app.charge_card import charge
 
+class UserCreateView(CreateView):
+    model = User
+    success_url = reverse_lazy("profile_update_view")
+    form_class = UserCreationForm
+    def form_valid(self, form):
+        valid = super(UserCreateView, self).form_valid(form)
+        username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
+        new_user = authenticate(username=username, password=password)
+        login(self.request, new_user)
+        return valid
 
-class TransactionView(FormView):
+
+class ProfileUpdateView(UpdateView):
+    template_name = "profile.html"
+    fields = ("access_level",)
+    success_url = reverse_lazy('inventory_list_view')
+
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
+
+class OrderFormView(FormView):
     template_name = "credit_card.html"
     form_class = OrderForm
-
 
 class InventoryListView(ListView):
     model = InventoryItem
@@ -29,6 +50,21 @@ class InventoryUpdateView(UpdateView):
 class InventoryDeleteView(DeleteView):
     model = InventoryItem
     success_url = reverse_lazy("inventory_list_view")
+
+class RoastingListView(ListView):
+    model = Invoice
+    template_name = "app/roasting.html"
+
+    def get_queryset(self):
+        invoices = super(RoastingListView, self).get_queryset()
+        return invoices.filter(is_filled=False)
+
+class BaggingListView(ListView):
+    model = Invoice
+    template_name = "app/bagging.html"
+
+
+
 
 def process_view(request):
     if request.method == 'POST':

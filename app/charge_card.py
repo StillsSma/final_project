@@ -3,7 +3,7 @@ import cgi
 import squareconnect
 from squareconnect.rest import ApiException
 from squareconnect.apis.transaction_api import TransactionApi
-from app.models import InventoryItem
+from app.models import InventoryItem, Invoice
 
 def charge(request):
     r = request.POST
@@ -23,6 +23,8 @@ def charge(request):
       res = api_response.transaction
     except ApiException as e:
       res = "Exception when calling TransactionApi->charge: {}".format(e)
-    item = InventoryItem.objects.get(id=request.POST['name'])
-    item.quantity = item.quantity - int(request.POST['quantity'])
-    item.save()
+    invoice = Invoice.objects.create()
+    invoice.save()
+    #item = InventoryItem.objects.get(id=request.POST['name'])
+    #item.quantity = item.quantity - int(request.POST['quantity'])
+    #item.save()

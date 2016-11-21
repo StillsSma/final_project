@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for invoice in object_list %}
+<div class="container">
+  {{invoice}}
+</div>
+
+
+{% endfor %}
+
+{% endblock %}
