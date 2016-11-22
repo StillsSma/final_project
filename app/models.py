@@ -17,6 +17,9 @@ class Invoice(models.Model):
     production = models.BooleanField(default=False)
     shipping = models.BooleanField(default=False)
 
+    def order_items(self):
+        return OrderItem.objects.filter(invoice=self)
+
 
 class OrderItem(models.Model):
 
@@ -33,6 +36,9 @@ class OrderItem(models.Model):
     quantity = models.IntegerField()
     description = models.CharField(max_length=100)
     grind = models.CharField(max_length=20, choices=GRIND)
+
+    def __str__(self):
+        return self.item
 
 class Profile(models.Model):
     ACCESS_LEVELS = [

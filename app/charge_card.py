@@ -3,7 +3,7 @@ import cgi
 import squareconnect
 from squareconnect.rest import ApiException
 from squareconnect.apis.transaction_api import TransactionApi
-from app.models import InventoryItem, Invoice
+from app.models import InventoryItem, Invoice, OrderItem
 
 def charge(request):
     r = request.POST
@@ -12,7 +12,7 @@ def charge(request):
     location_id = 'CBASECSHZryawv4Lm4P10p3gSj4'
     api_instance = TransactionApi()
     idempotency_key = str(uuid.uuid1())
-    print(r)
+    print(r['form-TOTAL_FORMS'])
 
     print("++++++++++++++++++++++++++++++")
     #total_cost = int(r['quantity']) * InventoryItem.objects.get(id=r['name']).price * 100
@@ -28,5 +28,10 @@ def charge(request):
 
     invoice = Invoice.objects.create()
     invoice.save()
-
-    
+    form_number = 0
+    for x in range(int(r['form-TOTAL_FORMS'])):
+        OrderItem.objects.create(invoice=invoice, item = r['form-{}-item'.format(form_number)],
+                            quantity=int(r['form-{}-quantity'.format(form_number)]),
+                            description=r['form-{}-description'.format(form_number)],
+                            grind=r['form-{}-grind'.format(form_number)])
+        form_number += 1
