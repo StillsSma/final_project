@@ -171,7 +171,13 @@
 
 
   <form id="nonce-form" novalidate action="/process_card/" method="post">
-    {{ form.as_p }}
+    {% for form in formset %}
+    <div class="container">
+      {{ form }}
+    </div>
+
+    {% endfor %}
+
 
     <label>Card Number</label>
     <div id="sq-card-number"></div>

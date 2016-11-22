@@ -11,10 +11,28 @@ class InventoryItem(models.Model):
     quantity = models.IntegerField()
 
 class Invoice(models.Model):
-    
-    time_created = models.DateTimeField(auto_now_add=True)
-    is_filled = models.BooleanField(default=False)
 
+    time_created = models.DateTimeField(auto_now_add=True)
+    roaster = models.BooleanField(default=False)
+    production = models.BooleanField(default=False)
+    shipping = models.BooleanField(default=False)
+
+
+class OrderItem(models.Model):
+
+    GRIND = [
+    ("whole bean", "WB" ),
+    ("fine", "#3"),
+    ("standard", "#7"),
+    ("coarse", "#10")
+
+    ]
+
+    invoice = models.ForeignKey(Invoice)
+    item = models.CharField(max_length=50)
+    quantity = models.IntegerField()
+    description = models.CharField(max_length=100)
+    grind = models.CharField(max_length=20, choices=GRIND)
 
 class Profile(models.Model):
     ACCESS_LEVELS = [
@@ -25,7 +43,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField('auth.User')
-    access_level = models.CharField(max_length=20, choices= ACCESS_LEVELS)
+    access_level = models.CharField(max_length=20, choices=ACCESS_LEVELS)
 
     @receiver(post_save, sender='auth.user')
     def create_profile(sender, **kwargs):

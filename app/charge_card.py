@@ -13,18 +13,20 @@ def charge(request):
     api_instance = TransactionApi()
     idempotency_key = str(uuid.uuid1())
     print(r)
-    total_cost = int(r['quantity']) * InventoryItem.objects.get(id=r['name']).price * 100
 
-    amount = {'amount': int(total_cost), 'currency': 'USD'}
-    body = {'idempotency_key': idempotency_key, 'card_nonce': nonce, 'amount_money': amount}
+    print("++++++++++++++++++++++++++++++")
+    #total_cost = int(r['quantity']) * InventoryItem.objects.get(id=r['name']).price * 100
 
-    try:
-      api_response = api_instance.charge(access_token, location_id, body)
-      res = api_response.transaction
-    except ApiException as e:
-      res = "Exception when calling TransactionApi->charge: {}".format(e)
+    #amount = {'amount': int(total_cost), 'currency': 'USD'}
+    #body = {'idempotency_key': idempotency_key, 'card_nonce': nonce, 'amount_money': amount}
+
+    #try:
+    #  api_response = api_instance.charge(access_token, location_id, body)
+    #  res = api_response.transaction
+    #except ApiException as e:
+    #  res = "Exception when calling TransactionApi->charge: {}".format(e)
+
     invoice = Invoice.objects.create()
     invoice.save()
-    #item = InventoryItem.objects.get(id=request.POST['name'])
-    #item.quantity = item.quantity - int(request.POST['quantity'])
-    #item.save()
+
+    

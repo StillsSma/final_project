@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, OrderFormView, \
+from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, OrderItemFormView, \
                         UserCreateView, ProfileUpdateView, RoastingListView, BaggingListView, process_view
 
 urlpatterns = [
@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^create/$', InventoryCreateView.as_view(), name="inventory_create_view"),
     url(r'^update/(?P<pk>\d+)$', InventoryUpdateView.as_view(), name="inventory_update_view"),
     url(r'^delete/(?P<pk>\d+)$', InventoryDeleteView.as_view(), name="inventory_delete_view"),
-    url(r'^order/$', OrderFormView.as_view(), name="order_form_view"),
+    url(r'^order/$', OrderItemFormView.as_view(), name="order_form_view"),
     url(r'^process_card/$',process_view, name="process_view"),
     url(r'^roasting/$', RoastingListView.as_view(), name="roasting_list_view"),
     url(r'^bagging/$', BaggingListView.as_view(), name="roasting_list_view")
