@@ -6,15 +6,13 @@
 <table style="width:100%">
   <tr>
     <th>Product</th>
-    <th>Price</th>
-    <th>Quantity</th>
+    <th>Price_per_oz</th>
 
   </tr>
   {% for item in object_list %}
   <tr>
     <td>{{item.name}}</td>
-    <td>{{item.price}}</td>
-    <td>{{item.quantity}}</td>
+    <td>{{item.price_per_oz}}</td>
     <td> <li role="presentation"><a href="{% url 'inventory_update_view' item.id %}">Update Inventory Item</a></li></td>
       <td>  <li role="presentation"><a href="{% url 'inventory_delete_view' item.id %}">Delete Inventory Item</a></li></td>
 

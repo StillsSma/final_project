@@ -175,10 +175,26 @@
 
     {% for form in formset %}
     <div class="container">
-      {{ form }}
+      <table style="width:100%">
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Amount</th>
+      <th>Grind</th>
+
+    </tr>
+    <tr>
+      <td>{{form.item}}</td>
+      <td>{{form.quantity}}</td>
+      <td>{{form.amount}}</td>
+      <td>{{form.grind}}</td>
+    </tr>
+  </table>
+
     </div>
 
     {% endfor %}
+    {{ formset.management_form }}
 
     <label>Card Number</label>
     <div id="sq-card-number"></div>

@@ -15,6 +15,18 @@ def charge(request):
     print(r['form-TOTAL_FORMS'])
 
     print("++++++++++++++++++++++++++++++")
+
+    invoice = Invoice.objects.create()
+    invoice.save()
+    form_number = 0
+
+    for x in range(int(r['form-TOTAL_FORMS'])):
+        OrderItem.objects.create(invoice=invoice, item = InventoryItem.objects.get(id=int(r['form-{}-item'.format(form_number)])),
+                            quantity=int(r['form-{}-quantity'.format(form_number)]),
+                            amount=r['form-{}-amount'.format(form_number)],
+                            grind=r['form-{}-grind'.format(form_number)])
+        form_number += 1
+
     #total_cost = int(r['quantity']) * InventoryItem.objects.get(id=r['name']).price * 100
 
     #amount = {'amount': int(total_cost), 'currency': 'USD'}
@@ -25,13 +37,3 @@ def charge(request):
     #  res = api_response.transaction
     #except ApiException as e:
     #  res = "Exception when calling TransactionApi->charge: {}".format(e)
-
-    invoice = Invoice.objects.create()
-    invoice.save()
-    form_number = 0
-    for x in range(int(r['form-TOTAL_FORMS'])):
-        OrderItem.objects.create(invoice=invoice, item = r['form-{}-item'.format(form_number)],
-                            quantity=int(r['form-{}-quantity'.format(form_number)]),
-                            description=r['form-{}-description'.format(form_number)],
-                            grind=r['form-{}-grind'.format(form_number)])
-        form_number += 1

@@ -7,8 +7,10 @@ from django.db.models.signals import post_save
 
 class InventoryItem(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    price = models.FloatField()
-    quantity = models.IntegerField()
+    price_per_oz = models.FloatField()
+
+    def __str__(self):
+        return str(self.name)
 
 class Invoice(models.Model):
 
@@ -21,6 +23,7 @@ class Invoice(models.Model):
         return OrderItem.objects.filter(invoice=self)
 
 
+
 class OrderItem(models.Model):
 
     GRIND = [
@@ -31,14 +34,25 @@ class OrderItem(models.Model):
 
     ]
 
+    SIZE = [
+    ("8", "8oz"),
+    ("9", "9oz"),
+    ("10", "10oz"),
+    ("11","11oz"),
+    ("12","12oz"),
+    ("16", "1lbs"),
+    ("80", "5lbs")
+
+    ]
+
     invoice = models.ForeignKey(Invoice)
-    item = models.CharField(max_length=50)
-    quantity = models.IntegerField()
-    description = models.CharField(max_length=100)
+    item = models.ForeignKey(InventoryItem)
+    quantity = models.PositiveIntegerField()
+    amount = models.CharField(max_length=20, choices=SIZE)
     grind = models.CharField(max_length=20, choices=GRIND)
 
     def __str__(self):
-        return self.item
+        return str(self.item)
 
 class Profile(models.Model):
     ACCESS_LEVELS = [
