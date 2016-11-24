@@ -5,12 +5,12 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from app.models import InventoryItem, Profile, OrderItem, Invoice
-from app.forms import OrderItemForm
-from django.forms import modelformset_factory
+from app.forms import OrderItemForm, CustomerForm
+from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.charge_card import charge
+from app.square_functions import charge, create_customer, list_customers
 
 class UserCreateView(CreateView):
     model = User
@@ -32,13 +32,36 @@ class ProfileUpdateView(UpdateView):
     def get_object(self):
         return Profile.objects.get(user=self.request.user)
 
+class CustomerServiceTemplateView(TemplateView):
+    template_name = "customer_service.html"
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        for customers in list_customers(self.request):
+            print("1")
+        context['customers'] = list_customers(self.request)
+
+        return context
+
+
+class CustomerFormView(FormView):
+    template_name = "customer_form.html"
+    form_class = CustomerForm
+    success_url = reverse_lazy("customer_service_view")
+
+    def form_valid(self, form):
+        print(self.request.POST)
+        create_customer(self.request)
+        return super(CustomerFormView, self).form_valid(form)
+
+
 class OrderItemFormView(FormView):
     template_name = "credit_card.html"
     form_class = OrderItem
 
     def get_context_data(self, **kwargs):
         context = {}
-        OrderItemFormSet = modelformset_factory(OrderItem, exclude=['invoice',])
+        OrderItemFormSet = formset_factory(OrderItemForm)
         context['formset'] = OrderItemFormSet
 
         return context
@@ -51,12 +74,12 @@ class InventoryListView(ListView):
 
 class InventoryCreateView(CreateView):
     model = InventoryItem
-    fields = ['name', 'price_per_oz']
+    fields = ['name', 'price_12_oz', 'price_1_lbs', 'price_5_lbs']
     success_url = reverse_lazy("inventory_list_view")
 
 class InventoryUpdateView(UpdateView):
     model = InventoryItem
-    fields = ['name', 'price_per_oz']
+    fields = ['name', 'price_12_oz', 'price_1_lbs', 'price_5_lbs']
     success_url = reverse_lazy("inventory_list_view")
 
 class InventoryDeleteView(DeleteView):
@@ -81,9 +104,8 @@ class ProductionListView(ListView):
 
 def process_view(request):
     if request.method == 'POST':
-        print(request.POST)
         if 'add_item' in request.POST:
-            OrderItemFormSet = modelformset_factory(OrderItem, exclude=['invoice',])
+            OrderItemFormSet = formset_factory(OrderItemForm)
             cp = request.POST.copy()
             cp['form-TOTAL_FORMS'] = int(cp['form-TOTAL_FORMS'])+ 1
             new_formset = OrderItemFormSet(cp, prefix='form')

@@ -20,10 +20,8 @@
         <li role="presentation"><a href="{% url 'login' %}">Login</a></li>
         <li role="presentation"><a href="{% url 'user_create_view' %}">Create User Account</a></li>
          {% else %}
-            <li role="presentation"><a href="{% url 'inventory_list_view' %}">Inventory</a></li>
             <li role="presentation"><a href="{% url 'inventory_create_view' %}">Create New Inventory Item</a></li>
             <li role="presentation"><a href="{% url 'profile_update_view' %}">Update Profile Status</a></li>
-            <li role="presentation"><a href="{% url 'order_form_view' %}">Generate Order</a></li>
             <li role="presentation"><a href="{% url 'logout' %}?next={% url 'inventory_list_view' %}">Logout</a></li>
             <li role="presentation"><a href="{% url 'roasting_list_view' %}">Roaster</a></li>
           {% endif %}

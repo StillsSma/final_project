@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Cutomer Service Portal</h2>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <a href="{% url 'order_form_view' %}">Create Invoice</a>
+
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <a href="{% url 'inventory_list_view' %}">View Inventory</a>
+
+  </div>
+</div>
+
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <a href="{% url 'customer_form_view' %}">Add Customer</a>
+
+  </div>
+</div>
+
+<div class="container">
+  {{customers}}
+</div>
+
+{% endblock %}

@@ -3,10 +3,11 @@
 {% block content %}
 
 {% for invoice in object_list %}
+{% for item in invoice.order_items%}
 <div class="container">
-  {{invoice.order_items}}
+  $ {{item.total_cost}}
 </div>
-
+{% endfor %}
 
 {% endfor %}
 
