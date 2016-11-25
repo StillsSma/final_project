@@ -2,8 +2,8 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, OrderItemFormView, \
-                        UserCreateView, ProfileUpdateView, RoastingListView, ProductionListView, process_view, \
-                        IndexView, CustomerServiceTemplateView, CustomerFormView
+                        UserCreateView, ProfileUpdateView, RoastingListView, ProductionListView, DeliveryListView, process_view, \
+                        IndexView, CustomerServiceTemplateView, CustomerFormView, InvoiceSeen
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -19,8 +19,10 @@ urlpatterns = [
     url(r'^delete/(?P<pk>\d+)$', InventoryDeleteView.as_view(), name="inventory_delete_view"),
     url(r'^order/$', OrderItemFormView.as_view(), name="order_form_view"),
     url(r'^process_card/$',process_view, name="process_view"),
+    url(r'^invoice/(?P<pk>\d+)$', InvoiceSeen.as_view(), name="invoice_seen_view"),
     url(r'^roasting/$', RoastingListView.as_view(), name="roasting_list_view"),
-    url(r'^production/$', ProductionListView.as_view(), name="production_list_view")
+    url(r'^production/$', ProductionListView.as_view(), name="production_list_view"),
+    url(r'^delivery/$', DeliveryListView.as_view(), name="delivery_list_view")
 
 
     ]

@@ -1,13 +1,86 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<html>
+<head>
+<style>
+button.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 36px;
+    width: 50%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 25px;
+    transition: 0.4s;
+}
 
-{% for invoice in object_list %}
+button.accordion.active, button.accordion:hover {
+    background-color: #ddd;
+}
+
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.6s ease-in-out;
+    opacity: 0;
+}
+
+div.panel.show {
+    opacity: 1;
+    max-height: 500px;
+}
+</style>
+</head>
+<body>
 <div class="container">
-  {{invoice.time_created}}
+
+
+  <h2>Received Invoices</h2>
+  {% for invoice in object_list%}
+  <button class="accordion">Invoice #{{invoice.id}}</button>
+
+  <div class="panel">
+    <p>{{invoice.time_created}}</p>
+    <h4>Total Cost: {{invoice.total_cost}}</h4>
+    {% for order in invoice.order_items %}
+    <p> {{order.item}} {{order.quantity}} {{order.amount}}</p>
+    {% endfor %}
+
+    {% if invoice.production_seen is False %}
+    <form class="" action="{% url 'invoice_seen_view' invoice.id %}?next={% url 'production_list_view' %}" method="post">
+  {% csrf_token %}
+  <input class="btn btn-default btn-md" type="submit" name="" value="Mark as Seen">
+  </form>
+
+  {% else %}
+  <h2><span class="label label-success">Seen!</span></h2>
+  {% endif %}
+
+  </div>
+  {% endfor %}
 </div>
+<script>
 
 
-{% endfor %}
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        this.nextElementSibling.classList.toggle("show");
+  }
+}
+</script>
+
+</body>
+</html>
 
 {% endblock %}
+<!DOCTYPE html>

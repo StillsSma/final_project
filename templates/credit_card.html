@@ -171,7 +171,7 @@
 
 
   <form id="nonce-form" novalidate action="/process_card/" method="post">
-    <input title='Add another order item' type='submit' name='add_item' value='Add' />
+    <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add' />
 
     {% for form in formset %}
     <div class="container">
@@ -217,7 +217,7 @@
       Clicking this Submit button kicks off the process to generate a card nonce
       from the buyer's card information.
     -->
-    <input type="submit" onclick="requestCardNonce(event)">
+    <input class="btn btn-default btn-md" type="submit" onclick="requestCardNonce(event)">
   </form>
   </div>
 </body>

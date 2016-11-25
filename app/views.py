@@ -10,7 +10,9 @@ from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.square_functions import charge, create_customer, list_customers
+from app.square_functions import charge, create_customer, list_customers, access_token
+from django.shortcuts import redirect
+
 
 class UserCreateView(CreateView):
     model = User
@@ -27,7 +29,7 @@ class UserCreateView(CreateView):
 class ProfileUpdateView(UpdateView):
     template_name = "profile.html"
     fields = ("access_level",)
-    success_url = reverse_lazy('inventory_list_view')
+    success_url = reverse_lazy('index_view')
 
     def get_object(self):
         return Profile.objects.get(user=self.request.user)
@@ -38,9 +40,7 @@ class CustomerServiceTemplateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         for customers in list_customers(self.request):
-            print("1")
-        context['customers'] = list_customers(self.request)
-
+            pass
         return context
 
 
@@ -53,6 +53,28 @@ class CustomerFormView(FormView):
         print(self.request.POST)
         create_customer(self.request)
         return super(CustomerFormView, self).form_valid(form)
+
+class InvoiceSeen(UpdateView):
+    model = Invoice
+    fields = ("roaster_seen", "production_seen", "shipping_seen",)
+
+    def form_valid(self, form):
+        if self.request.user.profile.access_level == 'r':
+            instance = form.save(commit=False)
+            instance.roaster_seen = True
+        if self.request.user.profile.access_level == 'p':
+            instance = form.save(commit=False)
+            instance.production_seen = True
+        if self.request.user.profile.access_level == 'd':
+            instance = form.save(commit=False)
+            instance.shipping_seen = True
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        print(self.request.GET['next'])
+        if 'next' in self.request.GET:
+            return self.request.GET['next']
+
 
 
 class OrderItemFormView(FormView):
@@ -92,7 +114,7 @@ class RoastingListView(ListView):
 
     def get_queryset(self):
         invoices = super(RoastingListView, self).get_queryset()
-        return invoices.filter(roaster=False)
+        return invoices.filter(roaster_complete=False)
 
 class ProductionListView(ListView):
     model = Invoice
@@ -100,7 +122,16 @@ class ProductionListView(ListView):
 
     def get_queryset(self):
         invoices = super(ProductionListView, self).get_queryset()
-        return invoices.filter(production=False)
+        return invoices.filter(production_complete=False)
+
+class DeliveryListView(ListView):
+    model = Invoice
+    template_name = "app/delivery.html"
+
+    def get_queryset(self):
+        invoices = super(DeliveryListView, self).get_queryset()
+        return invoices.filter(production_complete=False)
+
 
 def process_view(request):
     if request.method == 'POST':

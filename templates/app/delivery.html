@@ -51,8 +51,8 @@ div.panel.show {
     <p> {{order.item}} {{order.quantity}} {{order.amount}}</p>
     {% endfor %}
 
-    {% if invoice.roaster_seen is False %}
-    <form class="" action="{% url 'invoice_seen_view' invoice.id %}?next={% url 'roasting_list_view' %}" method="post">
+    {% if invoice.shipping_seen is False %}
+    <form class="" action="{% url 'invoice_seen_view' invoice.id %}?next={% url 'delivery_list_view' %}" method="post">
   {% csrf_token %}
   <input class="btn btn-default btn-md" type="submit" name="" value="Mark as Seen">
   </form>

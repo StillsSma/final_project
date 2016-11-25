@@ -4,6 +4,8 @@
 <div class="container">
   <h2>Cutomer Service Portal</h2>
 </div>
+<div class="container">
+
 <div class="panel panel-default">
   <div class="panel-body">
     <a href="{% url 'order_form_view' %}">Create Invoice</a>
@@ -17,7 +19,7 @@
   </div>
 </div>
 
-</div>
+
 <div class="panel panel-default">
   <div class="panel-body">
     <a href="{% url 'customer_form_view' %}">Add Customer</a>
@@ -29,4 +31,5 @@
   {{customers}}
 </div>
 
+</div>
 {% endblock %}

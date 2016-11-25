@@ -18,10 +18,12 @@ class InventoryItem(models.Model):
 class Invoice(models.Model):
 
     time_created = models.DateTimeField(auto_now_add=True)
-    roaster = models.BooleanField(default=False)
-    production = models.BooleanField(default=False)
-    shipping = models.BooleanField(default=False)
-
+    roaster_seen = models.BooleanField(default=False)
+    production_seen = models.BooleanField(default=False)
+    shipping_seen = models.BooleanField(default=False)
+    roaster_complete = models.BooleanField(default=False)
+    production_complete = models.BooleanField(default=False)
+    shipping_complete = models.BooleanField(default=False)
     def order_items(self):
         return OrderItem.objects.filter(invoice=self)
 
@@ -82,7 +84,7 @@ class Profile(models.Model):
     ACCESS_LEVELS = [
     ("c", "Customer Service"),
     ("r", "Roasting"),
-    ("o", "Production"),
+    ("p", "Production"),
     ("d", "Delivery")
     ]
 
@@ -95,3 +97,16 @@ class Profile(models.Model):
         created = kwargs["created"]
         if created:
             Profile.objects.create(user=instance)
+
+    @property
+    def is_customer_service(self):
+        return self.access_level == 'c'
+
+    def is_roasting(self):
+        return self.access_level == 'r'
+    @property
+    def is_production(self):
+        return self.access_level == 'p'
+    @property
+    def is_delivery(self):
+        return self.access_level == 'd'

@@ -6,11 +6,11 @@ from squareconnect.apis.transaction_api import TransactionApi
 from squareconnect.apis.customer_api import CustomerApi
 from app.models import InventoryItem, Invoice, OrderItem
 
+access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
 
 def charge(request):
     r = request.POST
     nonce = r['nonce']
-    access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
     location_id = 'CBASECSHZryawv4Lm4P10p3gSj4'
     api_instance = TransactionApi()
     idempotency_key = str(uuid.uuid1())
@@ -43,7 +43,7 @@ def charge(request):
 
 def create_customer(request):
     r = request.POST
-    access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
+
     api_instance = CustomerApi()
     body = {'given_name': r['given_name'], 'company_name': r['company_name'] ,
             'email_address': r['email_address'] , 'phone_number': r['phone_number'] ,'note': r['note']}
@@ -56,7 +56,6 @@ def create_customer(request):
 
 
 def list_customers(request):
-    access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
     api_instance = CustomerApi()
     api_response = api_instance.list_customers(access_token)
     return api_response.customers
