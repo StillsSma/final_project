@@ -1,9 +1,8 @@
 
 from django import forms
-from django.forms import ModelForm
-from app.models import InventoryItem, OrderItem, Customer
+from app.models import InventoryItem, OrderItem
 from django.forms import ModelChoiceField
-
+from app.square_functions import list_customers, access_token
 
 class MyModelChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
@@ -26,17 +25,24 @@ class OrderItemForm(forms.Form):
 
     ]
 
+
     item = MyModelChoiceField(queryset=InventoryItem.objects.all(), empty_label=None)
     quantity = forms.IntegerField()
     amount = forms.ChoiceField(choices=SIZE)
     grind = forms.ChoiceField(choices=GRIND)
 
-class CustomerForm(ModelForm):
+class CustomerForm(forms.Form):
     given_name = forms.CharField(required=False)
     company_name = forms.CharField(required=False)
     email_address = forms.EmailField(required=False)
     phone_number = forms.CharField(required=False)
     note = forms.CharField(required=False)
-    class Meta:
-        model = Customer
-        fields = '__all__'
+
+class InvoiceCustomerForm(forms.Form):
+        CUSTOMERS = []
+
+        for customer in list_customers():
+            result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
+            CUSTOMERS.append(tuple(result))
+
+        customer = forms.ChoiceField(choices=CUSTOMERS)

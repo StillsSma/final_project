@@ -16,7 +16,8 @@ class InventoryItem(models.Model):
         return str(self.name)
 
 class Invoice(models.Model):
-
+    
+    customer = models.CharField(max_length=50)
     time_created = models.DateTimeField(auto_now_add=True)
     roaster_seen = models.BooleanField(default=False)
     production_seen = models.BooleanField(default=False)
@@ -54,6 +55,9 @@ class OrderItem(models.Model):
 
     ]
 
+
+
+
     invoice = models.ForeignKey(Invoice)
     item = models.ForeignKey(InventoryItem)
     quantity = models.PositiveIntegerField()
@@ -72,13 +76,6 @@ class OrderItem(models.Model):
         elif self.amount == "5lbs":
             return int(self.quantity) * int(self.item.price_5_lbs)
 
-class Customer(models.Model):
-
-    given_name = models.CharField(max_length=100)
-    company_name = models.CharField(max_length=100)
-    email_address = models.EmailField()
-    phone_number = models.CharField(max_length=12)
-    note = models.TextField()
 
 class Profile(models.Model):
     ACCESS_LEVELS = [

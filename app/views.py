@@ -5,12 +5,12 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from app.models import InventoryItem, Profile, OrderItem, Invoice
-from app.forms import OrderItemForm, CustomerForm
+from app.forms import OrderItemForm, CustomerForm,InvoiceCustomerForm
 from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.square_functions import charge, create_customer, list_customers, access_token
+from app.square_functions import charge, create_customer,list_customers, access_token
 from django.shortcuts import redirect
 
 
@@ -39,8 +39,7 @@ class CustomerServiceTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {}
-        for customers in list_customers(self.request):
-            pass
+
         return context
 
 
@@ -50,9 +49,15 @@ class CustomerFormView(FormView):
     success_url = reverse_lazy("customer_service_view")
 
     def form_valid(self, form):
-        print(self.request.POST)
         create_customer(self.request)
         return super(CustomerFormView, self).form_valid(form)
+
+class CustomerListView(ListView):
+    template_name = "customer_list.html"
+    def get_queryset(self):
+        return list_customers()
+
+
 
 class InvoiceSeen(UpdateView):
     model = Invoice
@@ -79,14 +84,15 @@ class InvoiceSeen(UpdateView):
 
 class OrderItemFormView(FormView):
     template_name = "credit_card.html"
-    form_class = OrderItem
 
     def get_context_data(self, **kwargs):
         context = {}
         OrderItemFormSet = formset_factory(OrderItemForm)
         context['formset'] = OrderItemFormSet
+        context['invoice_form'] = InvoiceCustomerForm
 
         return context
+
 
 class IndexView(ListView):
     model = Invoice
@@ -140,7 +146,7 @@ def process_view(request):
             cp = request.POST.copy()
             cp['form-TOTAL_FORMS'] = int(cp['form-TOTAL_FORMS'])+ 1
             new_formset = OrderItemFormSet(cp, prefix='form')
-            return render(request, 'credit_card.html', {'formset':new_formset})
+            return render(request, 'credit_card.html', {'formset':new_formset, 'invoice_form':InvoiceCustomerForm})
         else:
             charge(request)
             return render(request, 'process.html')

@@ -15,10 +15,7 @@ def charge(request):
     api_instance = TransactionApi()
     idempotency_key = str(uuid.uuid1())
     print(r)
-
-    print("++++++++++++++++++++++++++++++")
-
-    invoice = Invoice.objects.create()
+    invoice = Invoice.objects.create(customer=r['customer'])
     invoice.save()
     form_number = 0
 
@@ -30,7 +27,6 @@ def charge(request):
         form_number += 1
 
     total_cost = invoice.total_cost * 100
-    print(total_cost)
     amount = {'amount': int(total_cost), 'currency': 'USD'}
     body = {'idempotency_key': idempotency_key, 'card_nonce': nonce, 'amount_money': amount}
 
@@ -43,11 +39,9 @@ def charge(request):
 
 def create_customer(request):
     r = request.POST
-
     api_instance = CustomerApi()
     body = {'given_name': r['given_name'], 'company_name': r['company_name'] ,
             'email_address': r['email_address'] , 'phone_number': r['phone_number'] ,'note': r['note']}
-
     try:
       api_response = api_instance.create_customer(access_token, body)
       res = api_response.customer
@@ -55,7 +49,9 @@ def create_customer(request):
       res = "Exception when calling CustomerApi->create: {}".format(e)
 
 
-def list_customers(request):
+def list_customers():
     api_instance = CustomerApi()
     api_response = api_instance.list_customers(access_token)
     return api_response.customers
+
+    

@@ -172,7 +172,11 @@
 
   <form id="nonce-form" novalidate action="/process_card/" method="post">
     <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add' />
-
+    <div class="container">
+      <p>
+            {{invoice_form}}
+      </p>
+    </div>
     {% for form in formset %}
     <div class="container">
       <table style="width:100%">
@@ -194,6 +198,8 @@
     </div>
 
     {% endfor %}
+
+
     {{ formset.management_form }}
 
     <label>Card Number</label>
