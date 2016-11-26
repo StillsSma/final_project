@@ -10,7 +10,7 @@ from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.square_functions import charge, create_customer,list_customers, access_token
+from app.square_functions import charge, create_customer,list_customers, delete_customer, access_token
 from django.shortcuts import redirect
 
 
@@ -56,6 +56,12 @@ class CustomerListView(ListView):
     template_name = "customer_list.html"
     def get_queryset(self):
         return list_customers()
+
+def customer_delete_view(request, customer_id):
+    delete_customer(customer_id)
+    return render(request, 'customer_list.html')
+
+
 
 
 

@@ -18,6 +18,7 @@
     <td>{{customer.given_name}}</td>
     <td>{{customer.company_name}}</td>
     <td>{{customer.id}}</td>
+    <td><a href="{% url 'customer_delete_view' customer.id %}">Delete Customer</a></td>
 
   </tr>
 {% endfor %}

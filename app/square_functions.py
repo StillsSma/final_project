@@ -39,6 +39,7 @@ def charge(request):
 
 def create_customer(request):
     r = request.POST
+    print(r)
     api_instance = CustomerApi()
     body = {'given_name': r['given_name'], 'company_name': r['company_name'] ,
             'email_address': r['email_address'] , 'phone_number': r['phone_number'] ,'note': r['note']}
@@ -54,4 +55,6 @@ def list_customers():
     api_response = api_instance.list_customers(access_token)
     return api_response.customers
 
-    
+def delete_customer(customer_id):
+    api_instance = CustomerApi()
+    api_response = api_instance.delete_customer(access_token, customer_id)
