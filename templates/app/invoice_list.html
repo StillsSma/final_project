@@ -30,7 +30,11 @@
 </div>
 <div style="height:100px;overflow:auto;" class="container">
 
-
+{% if object_list|length == 0 %}
+  <div class="container">
+    <h4>No Invoices Posted</h4>
+  </div>
+{% else %}
 <table style="width:45%">
   <tr>
     <th>Invoice no. </th>
@@ -63,5 +67,6 @@
 </table>
 </div>
 
+{% endif %}
 
 {% endblock %}

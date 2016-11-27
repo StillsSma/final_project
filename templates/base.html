@@ -23,7 +23,7 @@
         <li role="presentation"><a href="{% url 'user_create_view' %}">Create User Account</a></li>
          {% else %}
             <li role="presentation"><a href="{% url 'profile_update_view' %}">Update Profile Status</a></li>
-            <li role="presentation"><a href="{% url 'logout' %}?next={% url 'inventory_list_view' %}">Logout</a></li>
+            <li role="presentation"><a href="{% url 'logout' %}?next={% url 'index_view' %}">Logout</a></li>
           {% endif %}
 
 

@@ -3,45 +3,85 @@
 {% block content %}
 <html>
 <head>
-<style>
-button.accordion {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 36px;
-    width: 50%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 25px;
-    transition: 0.4s;
-}
 
-button.accordion.active, button.accordion:hover {
-    background-color: #ddd;
-}
-
-div.panel {
-    padding: 0 18px;
-    background-color: white;
-    max-height: 0;
-    overflow: hidden;
-    transition: 0.6s ease-in-out;
-    opacity: 0;
-}
-
-div.panel.show {
-    opacity: 1;
-    max-height: 500px;
-}
-</style>
 </head>
 <body>
 <div class="container">
-
+  {% if object_list|length == 0 %}
+    <div class="container">
+      <h4>No Invoices Posted</h4>
+    </div>
+  {% else %}
 
   <h2>Received Invoices</h2>
   {% for invoice in object_list%}
+  {% if invoice.shipping_seen is False %}
+  <style>
+  button.accordion {
+      background-color: #D9CBC7;
+      color: #444;
+      cursor: pointer;
+      padding: 36px;
+      width: 50%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 25px;
+      transition: 0.4s;
+  }
+
+  button.accordion.active, button.accordion:hover {
+      background-color: #D9CBC7;
+  }
+
+  div.panel {
+      padding: 0 18px;
+      background-color: white;
+      max-height: 0;
+      overflow: hidden;
+      transition: 0.6s ease-in-out;
+      opacity: 0;
+  }
+
+  div.panel.show {
+      opacity: 1;
+      max-height: 500px;
+  }
+  </style>
+  {% else %}
+  <style>
+  button.accordion {
+      background-color: #33CE1D;
+      color: #444;
+      cursor: pointer;
+      padding: 36px;
+      width: 50%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 25px;
+      transition: 0.4s;
+  }
+
+  button.accordion.active, button.accordion:hover {
+      background-color: #7ADA6D;
+  }
+
+  div.panel {
+      padding: 0 18px;
+      background-color: white;
+      max-height: 0;
+      overflow: hidden;
+      transition: 0.6s ease-in-out;
+      opacity: 0;
+  }
+
+  div.panel.show {
+      opacity: 1;
+      max-height: 500px;
+  }
+  </style>
+  {% endif %}
   <button class="accordion">Invoice #{{invoice.id}}</button>
 
   <div class="panel">
@@ -63,6 +103,7 @@ div.panel.show {
 
   </div>
   {% endfor %}
+  {% endif %}
 </div>
 <script>
 

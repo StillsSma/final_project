@@ -5,13 +5,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from app.models import InventoryItem, Profile, OrderItem, Invoice
-from app.forms import OrderItemForm, CustomerForm,InvoiceCustomerForm
+from app.forms import OrderItemForm, CustomerForm
 from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.square_functions import charge, create_customer,list_customers, delete_customer, access_token
+from app.square_functions import charge, create_customer, update_customer, list_customers, delete_customer, access_token
+from django import forms
 from django.shortcuts import redirect
+
 
 
 class UserCreateView(CreateView):
@@ -57,9 +59,12 @@ class CustomerListView(ListView):
     def get_queryset(self):
         return list_customers()
 
+
+
 def customer_delete_view(request, customer_id):
+
     delete_customer(customer_id)
-    return render(request, 'customer_list.html')
+    return redirect('customer_list_view')
 
 
 
@@ -68,6 +73,7 @@ def customer_delete_view(request, customer_id):
 class InvoiceSeen(UpdateView):
     model = Invoice
     fields = ("roaster_seen", "production_seen", "shipping_seen",)
+
 
     def form_valid(self, form):
         if self.request.user.profile.access_level == 'r':
@@ -82,7 +88,6 @@ class InvoiceSeen(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        print(self.request.GET['next'])
         if 'next' in self.request.GET:
             return self.request.GET['next']
 
@@ -92,6 +97,16 @@ class OrderItemFormView(FormView):
     template_name = "credit_card.html"
 
     def get_context_data(self, **kwargs):
+        class InvoiceCustomerForm(forms.Form):
+                CUSTOMERS = []
+                try:
+                    for customer in list_customers():
+                        result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
+                        CUSTOMERS.append(tuple(result))
+                except TypeError:
+                    CUSTOMERS = []
+                customer = forms.ChoiceField(choices=CUSTOMERS)
+
         context = {}
         OrderItemFormSet = formset_factory(OrderItemForm)
         context['formset'] = OrderItemFormSet
@@ -148,6 +163,15 @@ class DeliveryListView(ListView):
 def process_view(request):
     if request.method == 'POST':
         if 'add_item' in request.POST:
+            class InvoiceCustomerForm(forms.Form):
+                    CUSTOMERS = []
+                    try:
+                        for customer in list_customers():
+                            result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
+                            CUSTOMERS.append(tuple(result))
+                    except TypeError:
+                        CUSTOMERS = []
+                    customer = forms.ChoiceField(choices=CUSTOMERS)
             OrderItemFormSet = formset_factory(OrderItemForm)
             cp = request.POST.copy()
             cp['form-TOTAL_FORMS'] = int(cp['form-TOTAL_FORMS'])+ 1

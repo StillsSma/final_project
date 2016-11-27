@@ -6,11 +6,14 @@
 <div class="container">
 
 
-<table style="width:100%">
+<table style="width:100%" >
   <tr>
     <th>Name</th>
     <th>Company</th>
     <th>ID</th>
+    <th>Email</th>
+    <th>Phone Number</th>
+    <th>Note</th>
 
   </tr>
 {% for customer in object_list %}
@@ -18,6 +21,9 @@
     <td>{{customer.given_name}}</td>
     <td>{{customer.company_name}}</td>
     <td>{{customer.id}}</td>
+    <td>{{customer.email_address}}</td>
+    <td>{{customer.phone_number}}</td>
+    <td>{{customer.note}}</td>
     <td><a href="{% url 'customer_delete_view' customer.id %}">Delete Customer</a></td>
 
   </tr>

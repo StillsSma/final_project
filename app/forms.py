@@ -32,17 +32,8 @@ class OrderItemForm(forms.Form):
     grind = forms.ChoiceField(choices=GRIND)
 
 class CustomerForm(forms.Form):
-    given_name = forms.CharField(required=False)
+    given_name = forms.CharField()
     company_name = forms.CharField(required=False)
-    email_address = forms.EmailField(required=False)
+    email_address = forms.EmailField()
     phone_number = forms.CharField(required=False)
     note = forms.CharField(required=False)
-
-class InvoiceCustomerForm(forms.Form):
-        CUSTOMERS = []
-
-        for customer in list_customers():
-            result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
-            CUSTOMERS.append(tuple(result))
-
-        customer = forms.ChoiceField(choices=CUSTOMERS)
