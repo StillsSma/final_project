@@ -16,7 +16,7 @@ class InventoryItem(models.Model):
         return str(self.name)
 
 class Invoice(models.Model):
-    
+    delivery = models.BooleanField()
     customer = models.CharField(max_length=50)
     time_created = models.DateTimeField(auto_now_add=True)
     roaster_seen = models.BooleanField(default=False)
@@ -59,7 +59,7 @@ class OrderItem(models.Model):
 
 
     invoice = models.ForeignKey(Invoice)
-    item = models.ForeignKey(InventoryItem)
+    item = models.CharField(max_length=100)
     quantity = models.PositiveIntegerField()
     amount = models.CharField(max_length=20, choices=SIZE)
     grind = models.CharField(max_length=20, choices=GRIND)
@@ -70,11 +70,11 @@ class OrderItem(models.Model):
     @property
     def total_cost(self):
         if self.amount == "12oz":
-            return int(self.quantity) * int(self.item.price_12_oz)
+            return int(self.quantity) * int(InventoryItem.objects.get(name=self.item).price_12_oz)
         elif self.amount == "1lbs":
-            return int(self.quantity) * int(self.item.price_1_lbs)
+            return int(self.quantity) * int(InventoryItem.objects.get(name=self.item).price_1_lbs)
         elif self.amount == "5lbs":
-            return int(self.quantity) * int(self.item.price_5_lbs)
+            return int(self.quantity) * int(InventoryItem.objects.get(name=self.item).price_5_lbs)
 
 
 class Profile(models.Model):

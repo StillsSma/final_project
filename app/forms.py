@@ -27,7 +27,7 @@ class OrderItemForm(forms.Form):
 
 
     item = MyModelChoiceField(queryset=InventoryItem.objects.all(), empty_label=None)
-    quantity = forms.IntegerField()
+    quantity = forms.IntegerField(initial=0, min_value=0)
     amount = forms.ChoiceField(choices=SIZE)
     grind = forms.ChoiceField(choices=GRIND)
 

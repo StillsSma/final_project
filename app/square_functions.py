@@ -15,7 +15,11 @@ def charge(request):
     api_instance = TransactionApi()
     idempotency_key = str(uuid.uuid1())
     print(r)
-    invoice = Invoice.objects.create(customer=r['customer'])
+    if 'delivery' in r:
+        placevar = 'True'
+    else:
+        placevar = 'False'
+    invoice = Invoice.objects.create(customer=r['customer'], delivery=placevar)
     invoice.save()
     form_number = 0
 
@@ -38,7 +42,7 @@ def charge(request):
 
 
 def create_customer(request):
-    print(r)
+    r = request.POST
     api_instance = CustomerApi()
     body = {'given_name': r['given_name'], 'company_name': r['company_name'] ,
             'email_address': r['email_address'] , 'phone_number': r['phone_number'] ,'note': r['note']}
@@ -54,6 +58,11 @@ def list_customers():
     api_response = api_instance.list_customers(access_token)
     return api_response.customers
 
+def retrieve_customer(customer_id):
+    api_instance = CustomerApi()
+    api_response = api_instance.retrieve_customer(access_token, customer_id)
+    return api_response.customer
+
 def delete_customer(customer_id):
     api_instance = CustomerApi()
     api_response = api_instance.delete_customer(access_token, customer_id)
@@ -61,6 +70,7 @@ def delete_customer(customer_id):
 def update_customer(customer_id, request):
     api_instance = CustomerApi()
     r = request.POST
+    
     body = {'given_name': r['given_name'], 'company_name': r['company_name'] ,
             'email_address': r['email_address'] , 'phone_number': r['phone_number'] ,'note': r['note']}
     api_response = api_instance.update_customer(access_token, customer_id, body)

@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<style media="screen">
+table#t01 {
+  width: 100%;
+  background-color: #f1f1c1;
+}
+</style>
+
 <div class="container">
 
 
@@ -35,15 +42,17 @@
     <h4>No Invoices Posted</h4>
   </div>
 {% else %}
-<table style="width:45%">
+<table id=t01>
   <tr>
     <th>Invoice no. </th>
     <th>Time Created</th>
+
     <th>Roaster</th>
     <th>Production</th>
     <th>Delivery</th>
   </tr>
 {% for invoice in object_list %}
+
   <tr>
     <td>{{invoice.id}}</td>
     <td>{{invoice.time_created}}</td>
@@ -62,11 +71,13 @@
        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
       {% endif %}
     </div></td>
+
   </tr>
 {% endfor %}
 </table>
 </div>
 
 {% endif %}
+
 
 {% endblock %}

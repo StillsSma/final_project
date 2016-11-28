@@ -3,14 +3,14 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from app.models import InventoryItem, Profile, OrderItem, Invoice
 from app.forms import OrderItemForm, CustomerForm
 from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.square_functions import charge, create_customer, update_customer, list_customers, delete_customer, access_token
+from app.square_functions import charge, create_customer, update_customer, list_customers, retrieve_customer, delete_customer, access_token
 from django import forms
 from django.shortcuts import redirect
 
@@ -59,38 +59,51 @@ class CustomerListView(ListView):
     def get_queryset(self):
         return list_customers()
 
+given_name = forms.CharField()
+company_name = forms.CharField(required=False)
+email_address = forms.EmailField()
+phone_number = forms.CharField(required=False)
+note = forms.CharField(required=False)
 
+
+def customer_update_view(request, customer_id):
+    c = retrieve_customer(customer_id)
+    form = CustomerForm(initial={'given_name': c.given_name, 'company_name': c.company_name,
+                                'email_address': c.email_address, 'phone_number': c.phone_number,
+                                'note': c.note})
+    if request.method == 'GET':
+        return render(request, "customer_form.html", {'form': form})
+    else:
+        update_customer(customer_id, request)
+        return redirect('customer_list_view')
 
 def customer_delete_view(request, customer_id):
 
     delete_customer(customer_id)
     return redirect('customer_list_view')
 
+def invoice_update_view(request, pk):
+    invoice = Invoice.objects.get(id=pk)
+    if request.user.profile.access_level == 'r':
+        if invoice.roaster_seen == False:
+            invoice.roaster_seen = True
+        else:
+            invoice.roaster_complete = True
+    elif request.user.profile.access_level == 'p':
+            if invoice.production_seen == False:
+                invoice.production_seen = True
+            else:
+                invoice.production_complete = True
+    elif request.user.profile.access_level == 'd':
+            if invoice.shipping_seen == False:
+                invoice.shipping_seen = True
+            else:
+                invoice.shipping_complete = True
 
-
-
-
-class InvoiceSeen(UpdateView):
-    model = Invoice
-    fields = ("roaster_seen", "production_seen", "shipping_seen",)
-
-
-    def form_valid(self, form):
-        if self.request.user.profile.access_level == 'r':
-            instance = form.save(commit=False)
-            instance.roaster_seen = True
-        if self.request.user.profile.access_level == 'p':
-            instance = form.save(commit=False)
-            instance.production_seen = True
-        if self.request.user.profile.access_level == 'd':
-            instance = form.save(commit=False)
-            instance.shipping_seen = True
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        if 'next' in self.request.GET:
-            return self.request.GET['next']
-
+    if 'next' in request.GET:
+         print(request.GET['next'])
+    invoice.save()
+    return redirect(request.META['HTTP_REFERER'])
 
 
 class OrderItemFormView(FormView):
@@ -106,6 +119,7 @@ class OrderItemFormView(FormView):
                 except TypeError:
                     CUSTOMERS = []
                 customer = forms.ChoiceField(choices=CUSTOMERS)
+                delivery = forms.BooleanField()
 
         context = {}
         OrderItemFormSet = formset_factory(OrderItemForm)
@@ -157,7 +171,7 @@ class DeliveryListView(ListView):
 
     def get_queryset(self):
         invoices = super(DeliveryListView, self).get_queryset()
-        return invoices.filter(production_complete=False)
+        return invoices.filter(shipping_complete=False, delivery=True)
 
 
 def process_view(request):
@@ -172,6 +186,7 @@ def process_view(request):
                     except TypeError:
                         CUSTOMERS = []
                     customer = forms.ChoiceField(choices=CUSTOMERS)
+                    delivery = forms.BooleanField()
             OrderItemFormSet = formset_factory(OrderItemForm)
             cp = request.POST.copy()
             cp['form-TOTAL_FORMS'] = int(cp['form-TOTAL_FORMS'])+ 1
