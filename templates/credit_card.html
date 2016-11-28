@@ -151,31 +151,13 @@
 
 <body>
 
-  <!--
-    These div elements are the placeholder elements that are replaced by the
-    SqPaymentForm's iframes.
-  -->
-
-
-
-
-
-  <!--
-    After the SqPaymentForm generates a card nonce, *this* form POSTs the generated
-    card nonce to your application's server.
-
-    You should replace the action attribute of the form with the path of
-    the URL you want to POST the nonce to (for example, "/process-card")
-  -->
   <div class="container">
 
 
-  <form id="nonce-form" novalidate action="/process_card/" method="post">
+  <form id="nonce-form" novalidate action="" method="post">
     <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add' />
     <div class="container">
-      <p>
-            {{invoice_form}}
-      </p>
+      {{invoice_form}}
     </div>
     {% for form in formset %}
     <div class="container">

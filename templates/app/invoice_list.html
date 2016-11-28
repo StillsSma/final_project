@@ -5,6 +5,8 @@
 table#t01 {
   width: 100%;
   background-color: #f1f1c1;
+  font-size:150%
+
 }
 </style>
 
@@ -35,7 +37,7 @@ table#t01 {
   {% endif %}
 </div>
 </div>
-<div style="height:100px;overflow:auto;" class="container">
+<div style="height:200x" class="container">
 
 {% if object_list|length == 0 %}
   <div class="container">
@@ -43,16 +45,19 @@ table#t01 {
   </div>
 {% else %}
 <table id=t01>
+    <caption>Outstanding Invoices</caption>
   <tr>
     <th>Invoice no. </th>
     <th>Time Created</th>
-
-    <th>Roaster</th>
-    <th>Production</th>
-    <th>Delivery</th>
+    <th>Seen By Roaster</th>
+    <th>Seen By Production</th>
+    <th>Seen By Delivery</th>
   </tr>
 {% for invoice in object_list %}
 
+  {% if  invoice.shipping_complete or not invoice.delivery and invoice.production_complete %}
+
+  {% else %}
   <tr>
     <td>{{invoice.id}}</td>
     <td>{{invoice.time_created}}</td>
@@ -67,8 +72,15 @@ table#t01 {
       {% endif %}
     </div></td>
     <td><div class="">
+      {% if not invoice.delivery %}
+        <p>
+          N/A
+        </p>
+      {% else %}
       {% if invoice.shipping_seen %}
        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      {% endif %}
+      {% endif %}
       {% endif %}
     </div></td>
 

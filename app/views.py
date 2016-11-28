@@ -106,28 +106,30 @@ def invoice_update_view(request, pk):
     return redirect(request.META['HTTP_REFERER'])
 
 
-class OrderItemFormView(FormView):
-    template_name = "credit_card.html"
-
-    def get_context_data(self, **kwargs):
-        class InvoiceCustomerForm(forms.Form):
-                CUSTOMERS = []
-                try:
-                    for customer in list_customers():
-                        result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
-                        CUSTOMERS.append(tuple(result))
-                except TypeError:
-                    CUSTOMERS = []
-                customer = forms.ChoiceField(choices=CUSTOMERS)
-                delivery = forms.BooleanField()
-
-        context = {}
-        OrderItemFormSet = formset_factory(OrderItemForm)
-        context['formset'] = OrderItemFormSet
-        context['invoice_form'] = InvoiceCustomerForm
-
-        return context
-
+def order_item_view(request):
+    class InvoiceCustomerForm(forms.Form):
+        CUSTOMERS = []
+        try:
+            for customer in list_customers():
+                result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
+                CUSTOMERS.append(tuple(result))
+        except TypeError:
+            CUSTOMERS = []
+        customer = forms.ChoiceField(choices=CUSTOMERS)
+        delivery = forms.BooleanField()
+    OrderItemFormSet = formset_factory(OrderItemForm)
+    if request.method == 'GET':
+        return render(request, 'credit_card.html', {'formset': OrderItemFormSet, 'invoice_form': InvoiceCustomerForm} )
+    else:
+        if 'add_item' in request.POST:
+            OrderItemFormSet = formset_factory(OrderItemForm)
+            cp = request.POST.copy()
+            cp['form-TOTAL_FORMS'] = int(cp['form-TOTAL_FORMS'])+ 1
+            new_formset = OrderItemFormSet(cp, prefix='form')
+            return render(request, 'credit_card.html', {'formset':new_formset, 'invoice_form':InvoiceCustomerForm})
+        else:
+            charge(request)
+            return redirect('customer_service_view')
 
 class IndexView(ListView):
     model = Invoice
@@ -172,26 +174,3 @@ class DeliveryListView(ListView):
     def get_queryset(self):
         invoices = super(DeliveryListView, self).get_queryset()
         return invoices.filter(shipping_complete=False, delivery=True)
-
-
-def process_view(request):
-    if request.method == 'POST':
-        if 'add_item' in request.POST:
-            class InvoiceCustomerForm(forms.Form):
-                    CUSTOMERS = []
-                    try:
-                        for customer in list_customers():
-                            result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
-                            CUSTOMERS.append(tuple(result))
-                    except TypeError:
-                        CUSTOMERS = []
-                    customer = forms.ChoiceField(choices=CUSTOMERS)
-                    delivery = forms.BooleanField()
-            OrderItemFormSet = formset_factory(OrderItemForm)
-            cp = request.POST.copy()
-            cp['form-TOTAL_FORMS'] = int(cp['form-TOTAL_FORMS'])+ 1
-            new_formset = OrderItemFormSet(cp, prefix='form')
-            return render(request, 'credit_card.html', {'formset':new_formset, 'invoice_form':InvoiceCustomerForm})
-        else:
-            charge(request)
-            return render(request, 'process.html')

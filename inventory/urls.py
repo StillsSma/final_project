@@ -1,10 +1,10 @@
 
 from django.conf.urls import url, include
 from django.contrib import admin
-from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, OrderItemFormView, \
-                        UserCreateView, ProfileUpdateView, RoastingListView, ProductionListView, DeliveryListView, process_view, \
+from app.views import InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDeleteView, \
+                        UserCreateView, ProfileUpdateView, RoastingListView, ProductionListView, DeliveryListView, \
                         IndexView, CustomerServiceTemplateView, CustomerFormView, CustomerListView, customer_delete_view, \
-                        customer_update_view, invoice_update_view
+                        customer_update_view, invoice_update_view, order_item_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -21,8 +21,7 @@ urlpatterns = [
     url(r'^create/$', InventoryCreateView.as_view(), name="inventory_create_view"),
     url(r'^update/(?P<pk>\d+)$', InventoryUpdateView.as_view(), name="inventory_update_view"),
     url(r'^delete/(?P<pk>\d+)$', InventoryDeleteView.as_view(), name="inventory_delete_view"),
-    url(r'^order/$', OrderItemFormView.as_view(), name="order_form_view"),
-    url(r'^process_card/$',process_view, name="process_view"),
+    url(r'^order/$', order_item_view, name="order_form_view"),
     url(r'^invoice/(?P<pk>\d+)$', invoice_update_view, name="invoice_update_view"),
     url(r'^roasting/$', RoastingListView.as_view(), name="roasting_list_view"),
     url(r'^production/$', ProductionListView.as_view(), name="production_list_view"),
