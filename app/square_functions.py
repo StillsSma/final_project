@@ -6,7 +6,8 @@ from squareconnect.apis.transaction_api import TransactionApi
 from squareconnect.apis.customer_api import CustomerApi
 from app.models import InventoryItem, Invoice, OrderItem
 
-access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
+access_token = 'sq0atp-aX0N6FSHoI_Zn-KHDCfBSQ'
+sandbox_access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
 
 def charge(request):
     r = request.POST
@@ -70,7 +71,7 @@ def delete_customer(customer_id):
 def update_customer(customer_id, request):
     api_instance = CustomerApi()
     r = request.POST
-    
+
     body = {'given_name': r['given_name'], 'company_name': r['company_name'] ,
             'email_address': r['email_address'] , 'phone_number': r['phone_number'] ,'note': r['note']}
     api_response = api_instance.update_customer(access_token, customer_id, body)

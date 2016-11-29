@@ -34,4 +34,12 @@
   </div>
 </div>
 </div>
+
+{% for invoice in invoices %}
+  <div class="container">
+    <li>{{invoice.id}}  {{invoice.time_created}} $ {{invoice.total_cost}}</li>
+  </div>
+{% endfor %}
+
+
 {% endblock %}

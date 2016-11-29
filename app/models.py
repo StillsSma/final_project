@@ -24,14 +24,19 @@ class Invoice(models.Model):
     roaster_complete = models.BooleanField(default=False)
     production_complete = models.BooleanField(default=False)
     shipping_complete = models.BooleanField(default=False)
+
     def order_items(self):
         return OrderItem.objects.filter(invoice=self)
+
 
     @property
     def total_cost(self):
         items = OrderItem.objects.filter(invoice=self)
         items_total = sum([order_item.total_cost for order_item in items])
-        return items_total
+        if sum([int(order_item.amount) * int(order_item.quantity) for order_item in items ]) > 400:
+            return items_total * .9
+        else:
+            return items_total
 
 
 
@@ -68,11 +73,11 @@ class OrderItem(models.Model):
 
     @property
     def total_cost(self):
-        if self.amount == "12oz":
+        if self.amount == "12":
             return int(self.quantity) * int(InventoryItem.objects.get(name=self.item).price_12_oz)
-        elif self.amount == "1lbs":
+        elif self.amount == "16":
             return int(self.quantity) * int(InventoryItem.objects.get(name=self.item).price_1_lbs)
-        elif self.amount == "5lbs":
+        elif self.amount == "80":
             return int(self.quantity) * int(InventoryItem.objects.get(name=self.item).price_5_lbs)
 
 

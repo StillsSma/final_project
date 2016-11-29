@@ -19,9 +19,9 @@ class OrderItemForm(forms.Form):
 
     SIZE = [
 
-    ("12oz","12oz"),
-    ("1lbs", "1lbs"),
-    ("5lbs", "5lbs")
+    ("12","12oz"),
+    ("16", "1lbs"),
+    ("80", "5lbs")
 
     ]
 
@@ -32,8 +32,14 @@ class OrderItemForm(forms.Form):
     grind = forms.ChoiceField(choices=GRIND)
 
 class CustomerForm(forms.Form):
+
+    DISCOUNT = [
+    ("Discount","Discount"),
+    ("No Discount", "No Discount"),
+    ]
+
     given_name = forms.CharField()
     company_name = forms.CharField(required=False)
     email_address = forms.EmailField()
     phone_number = forms.CharField(required=False)
-    note = forms.CharField(required=False)
+    discount = forms.ChoiceField(choices=DISCOUNT)

@@ -10,7 +10,8 @@ from django.forms import formset_factory
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from app.square_functions import charge, create_customer, update_customer, list_customers, retrieve_customer, delete_customer, access_token
+from app.square_functions import charge, create_customer, update_customer, list_customers, \
+                                retrieve_customer, delete_customer, sandbox_access_token, access_token
 from django import forms
 from django.shortcuts import redirect
 
@@ -40,7 +41,8 @@ class CustomerServiceTemplateView(TemplateView):
     template_name = "customer_service.html"
 
     def get_context_data(self, **kwargs):
-        context = {}
+        object_list = Invoice.objects.all()
+        context = {'invoices': object_list}
 
         return context
 
