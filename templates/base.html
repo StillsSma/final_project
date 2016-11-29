@@ -11,6 +11,25 @@
        background-color: white;
      }
    </style>
+   <style>
+   table {
+       font-family: arial, sans-serif;
+       border-collapse: collapse;
+       width: 100%;
+       overflow: auto;
+   }
+
+   td, th {
+       border: 1px solid #dddddd;
+       text-align: left;
+       padding: 8px;
+   }
+
+   tr:nth-child(even) {
+       background-color: #dddddd;
+   }
+   </style>
+
   </head>
   <nav>
       <div class="container">
@@ -22,7 +41,6 @@
         <li role="presentation"><a href="{% url 'login' %}">Login</a></li>
         <li role="presentation"><a href="{% url 'user_create_view' %}">Create User Account</a></li>
          {% else %}
-            <li role="presentation"><a href="{% url 'profile_update_view' %}">Update Profile Status</a></li>
             <li role="presentation"><a href="{% url 'logout' %}?next={% url 'index_view' %}">Logout</a></li>
           {% endif %}
 

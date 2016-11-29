@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="container">
   <h2>Cutomer Service Portal</h2>
 </div>
@@ -35,11 +36,42 @@
 </div>
 </div>
 
-{% for invoice in invoices %}
-  <div class="container">
-    <li>{{invoice.id}}  {{invoice.time_created}} $ {{invoice.total_cost}}</li>
-  </div>
-{% endfor %}
+<div class="container">
 
+
+<table>
+  <tr>
+    <th>Invoice Id</th>
+    <th>Time Created</th>
+    <th>Total Cost</th>
+    <th>Consumer Discount</th>
+    <th>Bulk Purchase Discount</th>
+  </tr>
+  {% for invoice in invoices %}
+  <tr>
+    <td>{{invoice.id}} </td>
+    <td> {{invoice.time_created}}</td>
+    <td> {{invoice.total_cost}}</td>
+
+    <td> {% if invoice.customer_discount %}
+      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+
+        {% else %}
+
+        {% endif %}
+
+    </td>
+    <td>
+      {% if invoice.bulk_discount %}
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          {% else %}
+
+          {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+</div>
 
 {% endblock %}

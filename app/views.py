@@ -61,18 +61,12 @@ class CustomerListView(ListView):
     def get_queryset(self):
         return list_customers()
 
-given_name = forms.CharField()
-company_name = forms.CharField(required=False)
-email_address = forms.EmailField()
-phone_number = forms.CharField(required=False)
-note = forms.CharField(required=False)
-
 
 def customer_update_view(request, customer_id):
     c = retrieve_customer(customer_id)
     form = CustomerForm(initial={'given_name': c.given_name, 'company_name': c.company_name,
                                 'email_address': c.email_address, 'phone_number': c.phone_number,
-                                'note': c.note})
+                                'discount': c.note})
     if request.method == 'GET':
         return render(request, "customer_form.html", {'form': form})
     else:
@@ -141,12 +135,12 @@ class InventoryListView(ListView):
 
 class InventoryCreateView(CreateView):
     model = InventoryItem
-    fields = ['name', 'price_12_oz', 'price_1_lbs', 'price_5_lbs']
+    fields = ['name', 'picture', 'price_12_oz', 'price_1_lbs', 'price_5_lbs']
     success_url = reverse_lazy("inventory_list_view")
 
 class InventoryUpdateView(UpdateView):
     model = InventoryItem
-    fields = ['name', 'price_12_oz', 'price_1_lbs', 'price_5_lbs']
+    fields = ['name', 'picture', 'price_12_oz', 'price_1_lbs', 'price_5_lbs']
     success_url = reverse_lazy("inventory_list_view")
 
 class InventoryDeleteView(DeleteView):

@@ -9,14 +9,20 @@
 <table style="width:100%">
   <tr>
     <th>Product</th>
+    <th>Picture</th>
     <th>Price: 12oz</th>
     <th>Price: 1lbs</th>
     <th>Price: 5lbs</th>
 
   </tr>
   {% for item in object_list %}
+
   <tr>
     <td>{{item.name}}</td>
+    <td>
+    <img src="{{ MEDIA_URL }} {{item.image_url }}" alt="Picture of {{ item.picture }}" style="width:125px;height:90px;">
+
+    </td>
     <td>{{item.price_12_oz}}</td>
     <td>{{item.price_1_lbs}}</td>
     <td>{{item.price_5_lbs}}</td>

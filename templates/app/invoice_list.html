@@ -15,6 +15,9 @@ table#t01 {
 
 <div class="page-header" >
   <h1>Welcome</h1>
+  {% if not request.user.is_authenticated %}
+  Nothing
+  {% else %}
   {% if request.user.profile.is_roasting %}
   <form class="" action="{% url 'roasting_list_view' %}" method="get">
 <input class="btn btn-default btn-lg" type="submit" name="" value="Roasting Page">
@@ -91,6 +94,11 @@ table#t01 {
 </div>
 
 {% endif %}
+{% endif %}
+<footer>   <div class="container">
+      <li role="presentation"><a href="{% url 'profile_update_view' %}">Update Profile Status</a></li>
+</div>
+</footer>
 
 
 {% endblock %}
