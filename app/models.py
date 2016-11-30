@@ -25,6 +25,7 @@ class InventoryItem(models.Model):
 class Invoice(models.Model):
     delivery = models.BooleanField()
     customer = models.CharField(max_length=50)
+    customer_discount = models.CharField(max_length=20)
     time_created = models.DateTimeField(auto_now_add=True)
     roaster_seen = models.BooleanField(default=False)
     production_seen = models.BooleanField(default=False)
@@ -39,11 +40,10 @@ class Invoice(models.Model):
     @property
     def discount_rate(self):
         items = OrderItem.objects.filter(invoice=self)
-        customer = retrieve_customer(self.customer)
         bulk_discount = 0
         costumer_discount = 0
         condition1 =  sum([int(order_item.amount) * int(order_item.quantity) for order_item in items ]) > 400 #ounces
-        condition2 = customer.note == "Discount"
+        condition2 = self.customer_discount
         if condition1 or condition2:
             if condition1:
                 bulk_discount = .05
@@ -58,10 +58,6 @@ class Invoice(models.Model):
         items = OrderItem.objects.filter(invoice=self)
         return sum([int(order_item.amount) * int(order_item.quantity) for order_item in items ]) > 400
 
-    @property
-    def customer_discount(self):
-        customer = retrieve_customer(self.customer)
-        return customer.note == "Discount"
 
     @property
     def total_cost(self):

@@ -16,23 +16,26 @@
        font-family: arial, sans-serif;
        border-collapse: collapse;
        width: 100%;
-       overflow: auto;
    }
 
    td, th {
-       border: 1px solid #dddddd;
+       border: 1px solid #aaaaaa;
        text-align: left;
        padding: 8px;
    }
 
    tr:nth-child(even) {
-       background-color: #dddddd;
+       background-color: #eeeeee;
    }
    </style>
 
   </head>
-  <nav>
-      <div class="container">
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+    <a class="navbar-brand" href="#">
+      <img alt="Brand" src="...">
+    </a>
+  </div>
 
       <ul class="nav nav-pills">
         <li role="presentation"><a href="{% url 'index_view' %}">Home</a></li>

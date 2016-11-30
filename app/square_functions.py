@@ -9,6 +9,11 @@ import app.models
 access_token = 'sq0atp-aX0N6FSHoI_Zn-KHDCfBSQ'
 sandbox_access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
 
+def retrieve_customer(customer_id):
+    api_instance = CustomerApi()
+    api_response = api_instance.retrieve_customer(access_token, customer_id)
+    return api_response.customer
+
 def charge(request):
     r = request.POST
     nonce = r['nonce']
@@ -20,7 +25,13 @@ def charge(request):
         deliv = 'True'
     else:
         deliv = 'False'
-    invoice = app.models.Invoice.objects.create(customer=r['customer'], delivery=deliv)
+
+    customer = retrieve_customer(r['customer'])
+    if customer.note == "Discount":
+        discount = 'discount'
+    else:
+        discount = 'no_discount'
+    invoice = app.models.Invoice.objects.create(customer=r['customer'], delivery=deliv, customer_discount=discount)
     invoice.save()
     form_number = 0
 
@@ -36,7 +47,7 @@ def charge(request):
     body = {'idempotency_key': idempotency_key, 'card_nonce': nonce, 'amount_money': amount}
 
     try:
-      api_response = api_instance.charge(access_token, location_id, body)
+      api_response = api_instance.charge(sandbox_access_token, location_id, body)
       res = api_response.transaction
     except ApiException as e:
       res = "Exception when calling TransactionApi->charge: {}".format(e)
@@ -59,10 +70,7 @@ def list_customers():
     api_response = api_instance.list_customers(access_token)
     return api_response.customers
 
-def retrieve_customer(customer_id):
-    api_instance = CustomerApi()
-    api_response = api_instance.retrieve_customer(access_token, customer_id)
-    return api_response.customer
+
 
 def delete_customer(customer_id):
     api_instance = CustomerApi()

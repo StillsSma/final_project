@@ -53,6 +53,7 @@ class CustomerFormView(FormView):
     success_url = reverse_lazy("customer_service_view")
 
     def form_valid(self, form):
+        print(self.request.POST)
         create_customer(self.request)
         return super(CustomerFormView, self).form_valid(form)
 
