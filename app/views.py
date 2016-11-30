@@ -41,7 +41,7 @@ class CustomerServiceTemplateView(TemplateView):
     template_name = "customer_service.html"
 
     def get_context_data(self, **kwargs):
-        object_list = Invoice.objects.all()
+        object_list = Invoice.objects.all().order_by('-time_created')
         context = {'invoices': object_list}
 
         return context
@@ -105,13 +105,13 @@ def invoice_update_view(request, pk):
 
 def order_item_view(request):
     class InvoiceCustomerForm(forms.Form):
-        CUSTOMERS = []
+        CUSTOMERS = [('anon', 'anon')]
         try:
             for customer in list_customers():
                 result = [customer.id, (customer.given_name + ' ' + str(customer.email_address)) ]
                 CUSTOMERS.append(tuple(result))
         except TypeError:
-            CUSTOMERS = []
+            CUSTOMERS = [('anon', 'anon')]
         customer = forms.ChoiceField(choices=CUSTOMERS)
         delivery = forms.BooleanField()
     OrderItemFormSet = formset_factory(OrderItemForm)

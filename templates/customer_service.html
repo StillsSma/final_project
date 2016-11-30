@@ -1,46 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<ul class="list-group">
+
+<style media="screen">
+
+  #divmenu {
+
+    text-align: center;
+
+  }
+
+
+</style>
+
 
 <div class="container">
-  <h2>Cutomer Service Portal</h2>
+  <h2>Customer Service Portal</h2>
 </div>
 <div class="container">
 
-<div class="panel panel-default">
-  <div class="panel-body">
-    <a href="{% url 'order_form_view' %}">Create Invoice</a>
+  <div id=divmenu class="list-group">
 
+    <a href="{% url 'order_form_view' %}" class="list-group-item ">Create Invoice</a>
+    <a href="{% url 'inventory_list_view' %}" class="list-group-item ">View Inventory</a>
+    <a href="{% url 'customer_form_view' %}" class="list-group-item ">Add Customer</a>
+    <a href="{% url 'customer_list_view' %}" class="list-group-item ">View Customers</a>
   </div>
-</div>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <a href="{% url 'inventory_list_view' %}">View Inventory</a>
-
-  </div>
-</div>
 
 
-<div class="panel panel-default">
-  <div class="panel-body">
-    <a href="{% url 'customer_form_view' %}">Add Customer</a>
-
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-body">
-    <a href="{% url 'customer_list_view' %}">View Customers</a>
-
-  </div>
-</div>
 </div>
 
 <div class="container">
 
 
 <table>
+  <caption>All Invoices</caption>
   <tr>
     <th>Invoice Id</th>
     <th>Time Created</th>

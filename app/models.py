@@ -63,7 +63,7 @@ class Invoice(models.Model):
     def total_cost(self):
         items = OrderItem.objects.filter(invoice=self)
         items_total = sum([order_item.total_cost for order_item in items])
-        return items_total - (items_total * self.discount_rate)
+        return round(items_total - (items_total * self.discount_rate), 2)
 
 
 

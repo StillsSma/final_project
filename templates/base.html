@@ -7,11 +7,57 @@
     <title></title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" media="all" title="no title">
    <style media="screen">
-     body {
-       background-color: white;
-     }
-   </style>
-   <style>
+
+  
+   ul {
+       background-color: #653300;
+   }
+
+   a {
+    color: black;
+}
+   body {
+     background-color: #FFDD9A;
+
+   }
+
+   button.accordion {
+       background-color: #8F5033;
+       color: #111;
+       cursor: pointer;
+       padding: 36px;
+       width: 50%;
+       border: none;
+       text-align: left;
+       outline: none;
+       font-size: 25px;
+       transition: 0.4s;
+   }
+
+   button.accordion.active, button.accordion:hover {
+       background-color: #E17442;
+   }
+
+   div.panel {
+       padding: 0 18px;
+       background-color: tan;
+       max-height: 0;
+       overflow: hidden;
+       transition: 0.6s ease-in-out;
+       opacity: 0;
+   }
+
+   div.panel.show {
+       opacity: 1;
+       max-height: 500px;
+   }
+
+   input[type="button"], input[type="submit"] {
+    color:black;
+    background-color:#fed;
+    border: none;
+}
+
    table {
        font-family: arial, sans-serif;
        border-collapse: collapse;
@@ -25,15 +71,27 @@
    }
 
    tr:nth-child(even) {
-       background-color: #eeeeee;
+       background-color: #FFDC79;
+
    }
+   tr:nth-child(odd) {
+       background-color: #BA9261;
+     }
+   footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #653300;
+  text-align: right;
+}
    </style>
 
   </head>
   <nav class="navbar navbar-default">
     <div class="navbar-header">
-    <a class="navbar-brand" href="#">
-      <img alt="Brand" src="...">
+
     </a>
   </div>
 
@@ -58,3 +116,9 @@
       {% endblock %}
 
   </body>
+  <footer>   <div class="container">
+        {% if request.user.is_superuser %}
+        <li role="presentation"><a href="{% url 'profile_update_view' %}">Update Profile Status</a></li>
+        {% endif %}
+  </div>
+  </footer>

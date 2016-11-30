@@ -155,9 +155,16 @@
 
 
   <form id="nonce-form" novalidate action="" method="post">
-    <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add' />
     <div class="container">
-      4532759734545858
+      <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add Item' />
+
+    </div>
+
+    <div class="container">
+      
+
+        {{invoice_form.as_p}}
+
 
     {% for form in formset %}
     <div class="container">
@@ -193,19 +200,6 @@
     <label>Postal Code</label>
     <div id="sq-postal-code"></div>
 
-    {% for field in invoice_form %}
-    <div class="container">
-      <table style="width:100%">
-        <tr>
-          <th>{{field.name}}</th>
-        </tr>
-    <tr>
-      <td>{{field}}</td>
-    </tr>
-  </table>
-    </div>
-    {% endfor %}
-  </div>
 
       {% csrf_token %}
 

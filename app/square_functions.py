@@ -25,12 +25,16 @@ def charge(request):
         deliv = 'True'
     else:
         deliv = 'False'
-
-    customer = retrieve_customer(r['customer'])
-    if customer.note == "Discount":
-        discount = 'discount'
-    else:
+    try:
+        customer = retrieve_customer(r['customer'])
+        if customer.note == "Discount":
+            discount = 'discount'
+        else:
+            discount = 'no_discount'
+    except ApiException:
+        customer = ''
         discount = 'no_discount'
+
     invoice = app.models.Invoice.objects.create(customer=r['customer'], delivery=deliv, customer_discount=discount)
     invoice.save()
     form_number = 0

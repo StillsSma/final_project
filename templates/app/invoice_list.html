@@ -5,8 +5,8 @@
 table#t01 {
   width: 100%;
   background-color: #f1f1c1;
-  font-size:125%
-
+  font-size:100%;
+  overflow: scroll;
 }
 </style>
 
@@ -14,11 +14,12 @@ table#t01 {
 
 
 <div class="page-header" >
-  <h1>Welcome</h1>
-  </div>
   {% if not request.user.is_authenticated %}
-  Nothing
+
+    <h1>Welcome</h1>
   {% else %}
+
+  <h1>Greetings {{user}}</h1>
   {% if request.user.profile.is_roasting %}
   <form class="" action="{% url 'roasting_list_view' %}" method="get">
 <input class="btn btn-default btn-lg" type="submit" name="" value="Roasting Page">
@@ -96,10 +97,6 @@ table#t01 {
 
 {% endif %}
 {% endif %}
-<footer>   <div class="container">
-      <li role="presentation"><a href="{% url 'profile_update_view' %}">Update Profile Status</a></li>
-</div>
-</footer>
 
 
 {% endblock %}

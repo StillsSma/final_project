@@ -2,10 +2,18 @@
 {% block content %}
 
 <div class="container">
-  <h3>Inventory</h3>
+  <h3>Menu</h3>
 
-  <h4><a href="{% url 'inventory_create_view' %}">Create New Inventory Item</a>
-</h4>
+  <form class="" action="{% url 'inventory_create_view' %}" method="get">
+<input class="btn btn-default btn-lg" type="submit" name="" value="Create New Menu Item">
+</form>
+
+
+</div>
+
+<div class="container">
+
+
 <table style="width:100%">
   <tr>
     <th>Product</th>
