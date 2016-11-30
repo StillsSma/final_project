@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+<header>
+  <div class="container">
+
+
+  <form class="" action="{% url 'customer_service_view' %}" method="get">
+{% csrf_token %}
+    <input class="btn btn-success btn-md" type="submit" name="" value="Back">
+</form>
+</div>
+</header>
 
 <div class="container">
-  <h3>Inventory</h3>
+  <h1>Inventory</h1>
 
-  <form class="" action="{% url 'inventory_create_view' %}" method="get">
-<input class="btn btn-default btn-lg" type="submit" name="" value="Create New Inventory Item">
-</form>
+
 
 
 </div>
@@ -21,6 +29,13 @@
     <th>Price: 12oz</th>
     <th>Price: 1lbs</th>
     <th>Price: 5lbs</th>
+    <th>
+      <form class="" action="{% url 'inventory_create_view' %}" method="get">
+    <input class="btn btn-default btn-lg" type="submit" name="" value="Create New Inventory Item">
+    </form>
+
+
+    </th>
 
   </tr>
   {% for item in object_list %}

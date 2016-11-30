@@ -2,6 +2,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<head>
+  <div class="container">
+
+
+  <form class="" action="{% url 'customer_service_view' %}" method="get">
+  {% csrf_token %}
+    <input class="btn btn-success btn-md" type="submit" name="" value="Back">
+  </form>
+  </div>
+</head>
 <div class="container">
   <div class="col-md-6 col-md-offset-3">
   <h3>Customer Information</h3>

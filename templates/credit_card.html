@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <html>
+
 <head>
+
+    <div class="container">
+    <form class="" action="{% url 'customer_service_view' %}" method="get">
+    {% csrf_token %}
+      <input class="btn btn-success btn-md" type="submit" name="" value="Back">
+    </form>
+    </div>
+
   <meta charset="UTF-8">
   <title>Sample Payment Form</title>
   <script type="text/javascript" src="https://js.squareup.com/v2/paymentform">
@@ -158,17 +167,14 @@
 
 
   <form id="nonce-form" novalidate action="" method="post">
-    <div class="container">
-      <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add Item' />
-
-    </div>
-
-    <div class="container">
 
 
         {{invoice_form.as_p}}
+        <div class="container">
 
 
+        <input class="btn btn-default btn-md" title='Add another order item' type='submit' name='add_item' value='Add Item' />
+</div>
     {% for form in formset %}
     <div class="container">
       <table style="width:100%">
