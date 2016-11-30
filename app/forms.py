@@ -38,8 +38,8 @@ class CustomerForm(forms.Form):
     ("No Discount", "No Discount"),
     ]
 
-    given_name = forms.CharField()
-    company_name = forms.CharField(required=False)
-    email_address = forms.EmailField()
-    phone_number = forms.CharField(required=False)
+    given_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    company_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    email_address = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
+    phone_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
     discount = forms.ChoiceField(choices=DISCOUNT)

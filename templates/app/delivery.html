@@ -17,6 +17,8 @@
 
   <h2>Received Invoices</h2>
 
+  <div class="body">
+
   {% for invoice in object_list %}
   {% if invoice.shipping_seen is False %}
   <button class="accordion">Invoice #{{invoice.id}}</button>
@@ -46,6 +48,8 @@
   </div>
   {% endfor %}
   {% endif %}
+</div>
+
 </div>
 <script>
 

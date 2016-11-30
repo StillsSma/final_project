@@ -5,10 +5,10 @@
 <head>
 <style>
 
+
 </style>
 </head>
 <body>
-<div class="container">
   {% if object_list|length == 0 %}
     <div class="container">
       <h4>No Invoices Posted</h4>
@@ -16,6 +16,9 @@
   {% else %}
 
   <h2>Received Invoices</h2>
+<div class="body">
+
+  <div class="container">
 
   {% for invoice in object_list %}
 

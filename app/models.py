@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from app.square_functions import retrieve_customer
+from datetime import date, datetime, timedelta
 
 
 class InventoryItem(models.Model):
@@ -64,7 +65,10 @@ class Invoice(models.Model):
         items = OrderItem.objects.filter(invoice=self)
         items_total = sum([order_item.total_cost for order_item in items])
         return round(items_total - (items_total * self.discount_rate), 2)
-
+        
+    @property
+    def is_recent(self):
+        return self.time_created.date() == date.today()
 
 
 

@@ -2,9 +2,21 @@
 
 {% block content %}
 
+<style media="screen">
+  div.customertable {
+    height:500px;
+     overflow:auto;
+     margin-top:20px;
+
+  }
+</style>
 
 <div class="container">
+  <h1>Saved Customers</h1>
+</div>
 
+<div class="container">
+  <div class="customertable">
 
 <table style="width:100%" >
   <tr>
@@ -32,6 +44,8 @@
   </tr>
 {% endfor %}
 </table>
+
+  </div>
 </div>
 
 

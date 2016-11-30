@@ -152,6 +152,9 @@
 <body>
 
   <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+
 
 
   <form id="nonce-form" novalidate action="" method="post">
@@ -161,7 +164,7 @@
     </div>
 
     <div class="container">
-      
+
 
         {{invoice_form.as_p}}
 
@@ -191,6 +194,8 @@
 
     {{ formset.management_form }}
 
+
+
     <label>Card Number</label>
     <div id="sq-card-number"></div>
     <label>CVV</label>
@@ -215,6 +220,9 @@
     -->
     <input class="btn btn-default btn-md" type="submit" onclick="requestCardNonce(event)">
   </form>
+</div>
+
+</div>
   </div>
 </body>
 </html>

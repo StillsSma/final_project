@@ -5,12 +5,22 @@
 <style media="screen">
 
   #divmenu {
-
-    text-align: center;
+    text-align: left;
 
   }
 
+  a.list-group-item {
+    color: black;
+    background-color: #C14444;
 
+  }
+
+#divtable {
+  height:200px;
+ overflow:scroll;
+ margin-top:20px;
+
+}
 </style>
 
 
@@ -30,11 +40,13 @@
 
 </div>
 
-<div class="container">
+
+
+<div id=divtable class="container">
 
 
 <table>
-  <caption>All Invoices</caption>
+  <caption>Today's Invoices</caption>
   <tr>
     <th>Invoice Id</th>
     <th>Time Created</th>
@@ -42,7 +54,11 @@
     <th>Consumer Discount</th>
     <th>Bulk Purchase Discount</th>
   </tr>
+
+
   {% for invoice in invoices %}
+  {% if invoice.is_recent %}
+
   <tr>
     <td>{{invoice.id}} </td>
     <td> {{invoice.time_created}}</td>
@@ -64,6 +80,8 @@
           {% endif %}
     </td>
   </tr>
+  {% else %}
+  {% endif %}
   {% endfor %}
 </table>
 
