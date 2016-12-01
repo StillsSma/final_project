@@ -63,7 +63,9 @@
     <th>Invoice no. </th>
     <th>Time Created</th>
     <th>Seen By Roaster</th>
+    <th>Roasted</th>
     <th>Seen By Production</th>
+    <th>Bagged</th>
     <th>Seen By Delivery</th>
   </tr>
 
@@ -82,7 +84,17 @@
       {% endif %}
     </div></td>
     <td><div class="">
+      {% if invoice.roaster_complete %}
+       <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      {% endif %}
+    </div></td>
+    <td><div class="">
       {% if invoice.production_seen %}
+       <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      {% endif %}
+    </div></td>
+    <td><div class="">
+      {% if invoice.production_complete %}
        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
       {% endif %}
     </div></td>

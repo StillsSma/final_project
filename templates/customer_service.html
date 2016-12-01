@@ -57,7 +57,7 @@
 
 
   {% for invoice in invoices %}
-  {% if invoice.is_recent %}
+    {% if invoice.is_recent %}
 
   <tr>
     <td>{{invoice.id}} </td>
@@ -79,9 +79,8 @@
 
           {% endif %}
     </td>
+      {% endif %}
   </tr>
-  {% else %}
-  {% endif %}
   {% endfor %}
 </table>
 
