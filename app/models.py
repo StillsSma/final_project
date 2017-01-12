@@ -7,6 +7,7 @@ from datetime import date, datetime, timedelta
 
 
 class InventoryItem(models.Model):
+# The different types of coffee sold
     name = models.CharField(max_length=40, unique=True)
     picture = models.FileField()
     price_12_oz = models.FloatField()
@@ -24,6 +25,8 @@ class InventoryItem(models.Model):
 
 
 class Invoice(models.Model):
+    # The invoices created, reflected in square database
+    # Boolean Fields indicate invoice status
     delivery = models.BooleanField()
     customer = models.CharField(max_length=50)
     customer_discount = models.CharField(max_length=20)
@@ -40,6 +43,7 @@ class Invoice(models.Model):
 
     @property
     def discount_rate(self):
+    # used to calculate the discount rate associated with a given invoice based on two conditions.
         items = OrderItem.objects.filter(invoice=self)
         bulk_discount = 0
         costumer_discount = 0
@@ -65,7 +69,7 @@ class Invoice(models.Model):
         items = OrderItem.objects.filter(invoice=self)
         items_total = sum([order_item.total_cost for order_item in items])
         return round(items_total - (items_total * self.discount_rate), 2)
-        
+
     @property
     def is_recent(self):
         return self.time_created.date() == date.today()
@@ -73,6 +77,7 @@ class Invoice(models.Model):
 
 
 class OrderItem(models.Model):
+# Represents the different items that can be found on an invoice.
 
     GRIND = [
     ("whole bean", "WB" ),
@@ -113,6 +118,7 @@ class OrderItem(models.Model):
 
 
 class Profile(models.Model):
+    # user profiles with associated access levels, dictating app experience 
     ACCESS_LEVELS = [
     ("c", "Customer Service"),
     ("r", "Roasting"),

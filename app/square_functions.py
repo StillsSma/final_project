@@ -6,15 +6,17 @@ from squareconnect.apis.transaction_api import TransactionApi
 from squareconnect.apis.customer_api import CustomerApi
 import app.models
 
+# These functions do the legwork of interacting with the Square database
+
+# tokens associated with a square account, needed to hit square API
 access_token = 'sq0atp-aX0N6FSHoI_Zn-KHDCfBSQ'
 sandbox_access_token = 'sandbox-sq0atb-0dMkHE4SNy91WlknE8S6Ig'
 
-def retrieve_customer(customer_id):
-    api_instance = CustomerApi()
-    api_response = api_instance.retrieve_customer(access_token, customer_id)
-    return api_response.customer
+
 
 def charge(request):
+# Creates an invoice object in the app database, then charges the dummy credit card
+# the amount corresponding to the orderitems and discounts associated with the invoice
     r = request.POST
     nonce = r['nonce']
     location_id = 'CBASECSHZryawv4Lm4P10p3gSj4'
@@ -56,6 +58,7 @@ def charge(request):
     except ApiException as e:
       res = "Exception when calling TransactionApi->charge: {}".format(e)
 
+# Following functions implemnt CRUD functionality for customers in the square database 
 
 def create_customer(request):
     r = request.POST
@@ -68,6 +71,10 @@ def create_customer(request):
     except ApiException as e:
       res = "Exception when calling CustomerApi->create: {}".format(e)
 
+def retrieve_customer(customer_id):
+    api_instance = CustomerApi()
+    api_response = api_instance.retrieve_customer(access_token, customer_id)
+    return api_response.customer
 
 def list_customers():
     api_instance = CustomerApi()

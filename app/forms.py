@@ -4,11 +4,14 @@ from app.models import InventoryItem, OrderItem
 from django.forms import ModelChoiceField
 from app.square_functions import list_customers, access_token
 
+
 class MyModelChoiceField(ModelChoiceField):
+# allows for chosing item in following form from a dropdown menu that reflects the current inventory.  
     def label_from_instance(self, obj):
         return obj.name
 
 class OrderItemForm(forms.Form):
+# Form used in selecting order items for the invoice
     GRIND = [
     ("whole bean", "WB" ),
     ("fine", "#3"),
@@ -32,7 +35,7 @@ class OrderItemForm(forms.Form):
     grind = forms.ChoiceField(choices=GRIND)
 
 class CustomerForm(forms.Form):
-
+# Form used for adding customers to the square database
     DISCOUNT = [
     ("Discount","Discount"),
     ("No Discount", "No Discount"),
