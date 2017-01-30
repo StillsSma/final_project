@@ -10,9 +10,12 @@
 </form>
 </div>
 </header>
+<div class="container"  data-toggle="popover" title="Menu Items"
+ data-content="The list of all types of coffee offered by this roastery.  Updates will be reflected on the invoice creation page." >
 
+</div>
 <div class="container">
-  <h1>Inventory</h1>
+  <h1>Menu</h1>
 
 
 
@@ -31,7 +34,7 @@
     <th>Price: 5lbs</th>
     <th>
       <form class="" action="{% url 'inventory_create_view' %}" method="get">
-    <input class="btn btn-default btn-lg" type="submit" name="" value="Create New Inventory Item">
+    <input class="btn btn-default btn-lg" type="submit" name="" value="Create New Menu Item">
     </form>
 
 
@@ -49,8 +52,8 @@
     <td>{{item.price_12_oz}}</td>
     <td>{{item.price_1_lbs}}</td>
     <td>{{item.price_5_lbs}}</td>
-    <td> <li role="presentation"><a href="{% url 'inventory_update_view' item.id %}">Update Inventory Item</a></li></td>
-      <td>  <li role="presentation"><a href="{% url 'inventory_delete_view' item.id %}">Delete Inventory Item</a></li></td>
+    <td> <li role="presentation"><a href="{% url 'inventory_update_view' item.id %}">Update Menu Item</a></li></td>
+      <td>  <li role="presentation"><a href="{% url 'inventory_delete_view' item.id %}">Delete Menu Item</a></li></td>
 
   </tr>
   {% endfor %}

@@ -3,10 +3,11 @@
 {% block content %}
 <div class="container">
   <form class="" action="" method="post">
-    <p>
-      You are about to delete Inventory Item: {{ item.name }}. Are you Sure?
-    </p>
-    <input class="btn btn-default btn-md" type="submit" value="Yes">
+    <h2>You are about to delete Menu Item: "{{object}}" Are you Sure?</h2>
+
+
+    <input class="btn btn-default btn-lg" type="submit" value="Yes">
+
     <a href="{% url 'inventory_list_view' %}">No, Go back.</a>
     {% csrf_token %}
   </form>

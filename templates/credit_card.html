@@ -37,7 +37,7 @@
     ],
     cardNumber: {
       elementId: 'sq-card-number',
-      placeholder: '•••• •••• •••• ••••'
+      placeholder: ''
     },
     cvv: {
       elementId: 'sq-cvv',
@@ -159,7 +159,10 @@
 </head>
 
 <body>
+  <div class="container"  data-toggle="popover" title="Invoice Creation"
+   data-content="Items are added to the invoice.  A dummy credit card number is provided to make online transactions with square." >
 
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-md-6">
@@ -199,6 +202,7 @@
 
 
     {{ formset.management_form }}
+
 
 
 

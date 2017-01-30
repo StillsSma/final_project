@@ -4,14 +4,26 @@
 <html>
   <head>
     <meta charset="utf-8">
+
     <title></title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" media="all" title="no title">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+  $(document).ready(function(){
+      $('[data-toggle="popover"]').popover('show');
+  });
+  </script>
+
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" media="all" title="no title">
+
    <style media="screen">
 
 
 
+
    a {
-    color: black;
+    color: white;
+    text-decoration: : none;
 }
    body {
      background-color: #FFDD9A;
@@ -90,13 +102,43 @@
   background-color: #653300;
   text-align: right;
 }
+
+.popover {
+margin-top: 90px;
+  background-color: #eee;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #aaa;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+
+  line-break: auto;
+}
+
+  .popover > .arrow,
+  .popover > .arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+  }
+  .popover > .arrow {
+    border-width: 0px;
+  }
+  .popover > .arrow:after {
+    content: "";
+    border-width: 0px;
+}
+
    </style>
 
   </head>
-  <nav class="navbar navbar-default">
+<nav style="background-color: brown;"class="navbar navbar-default">
     <div class="navbar-header">
-
-    </a>
   </div>
 
       <ul class="nav nav-pills">
@@ -114,7 +156,7 @@
 
         </div>
 
-          </nav>
+</nav>
   <body>
       {% block content %}
       {% endblock %}

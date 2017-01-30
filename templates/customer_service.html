@@ -23,7 +23,10 @@
 }
 </style>
 
+<div class="container"  data-toggle="popover" title="Customer Service Portal"
+ data-content="This page provides links to verious customer service functions, while displaying invoices placed in the last 24 hours." >
 
+</div>
 <div class="container">
   <h2>Customer Service Portal</h2>
 </div>
@@ -32,7 +35,7 @@
   <div id=divmenu class="list-group">
 
     <a href="{% url 'order_form_view' %}" class="list-group-item ">Create Invoice</a>
-    <a href="{% url 'inventory_list_view' %}" class="list-group-item ">View Inventory</a>
+    <a href="{% url 'inventory_list_view' %}" class="list-group-item ">View Menu</a>
     <a href="{% url 'customer_form_view' %}" class="list-group-item ">Add Customer</a>
     <a href="{% url 'customer_list_view' %}" class="list-group-item ">View Customers</a>
   </div>

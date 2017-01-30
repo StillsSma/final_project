@@ -7,18 +7,25 @@
  overflow:scroll;
  margin-top:20px;
 
+
 }
+
 </style>
 
 <div class="container">
+  <div class="container"  data-toggle="popover" title="Main Page"
+   data-content="This page displays the status of all outstanding invoices to all users,
+   regardless of access level.  Once an invoice has been marked as seen and completed by all levels, it disappears.  " >
 
-
+  </div>
 <div class="page-header" >
   {% if not request.user.is_authenticated %}
 
     <h1>Welcome To RoastingCo Invoice Manager</h1>
     <h4>Please Login To Create And View Invoices</h4>
   {% else %}
+
+
 
   <h1>Greetings {{user}}</h1>
   {% if request.user.profile.is_roasting %}
@@ -32,9 +39,14 @@
 </form>
   {% endif %}
   {% if request.user.profile.is_customer_service %}
+
+
+
+
   <form class="" action="{% url 'customer_service_view' %}" method="get">
 <input class="btn btn-default btn-lg" type="submit" name="" value="Customer Service Portal">
 </form>
+
   {% endif %}
   {% if request.user.profile.is_delivery %}
   <form class="" action="{% url 'delivery_list_view' %}" method="get">
@@ -52,7 +64,9 @@
 {% else %}
 
 
+</div>
 
+</div>
 
 <div id=to1 class="container">
 
@@ -119,6 +133,7 @@
 
 {% endif %}
 {% endif %}
+
 
 
 {% endblock %}
