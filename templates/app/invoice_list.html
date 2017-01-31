@@ -13,18 +13,19 @@
 </style>
 
 <div class="container">
+
+<div class="page-header" >
+  {% if not request.user.is_authenticated %}
+
+    <h1>Welcome To RoastingCo Invoice Manager</h1>
+    <h4>Please Login Or Create A New User Account To Create And View Invoices</h4>
+  {% else %}
+
   <div class="container"  data-toggle="popover" title="Main Page"
    data-content="This page displays the status of all outstanding invoices to all users,
    regardless of access level.  Once an invoice has been marked as seen and completed by all levels, it disappears.  " >
 
   </div>
-<div class="page-header" >
-  {% if not request.user.is_authenticated %}
-
-    <h1>Welcome To RoastingCo Invoice Manager</h1>
-    <h4>Please Login To Create And View Invoices</h4>
-  {% else %}
-
 
 
   <h1>Greetings {{user}}</h1>
