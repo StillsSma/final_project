@@ -13,7 +13,10 @@
 </style>
 
 <div class="container">
-
+  <div class="col-md-4"  data-toggle="popover" title="Main Page" data-placement="right"
+   data-content="This page displays the status of all outstanding invoices to all users,
+   regardless of access level.  Once an invoice has been marked as seen and completed by all levels, it disappears.  " >
+  </div>
 <div class="page-header" >
   {% if not request.user.is_authenticated %}
 
@@ -21,11 +24,7 @@
     <h4>Please Login Or Create A New User Account To Create And View Invoices</h4>
   {% else %}
 
-  <div class="container"  data-toggle="popover" title="Main Page"
-   data-content="This page displays the status of all outstanding invoices to all users,
-   regardless of access level.  Once an invoice has been marked as seen and completed by all levels, it disappears.  " >
 
-  </div>
 
 
   <h1>Greetings {{user}}</h1>
